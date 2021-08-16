@@ -11,6 +11,8 @@
     <MudSlider Class="pa-4" @bind-Value="grayscale" Min="0" Max="100" Color="Color.Info">grayscale: @grayscale.ToString()</MudSlider>
     <MudSlider Class="pa-4" @bind-Value="brightness" Min="0" Max="200" Color="Color.Info">brightness: @brightness.ToString()</MudSlider>
     <MudSlider Class="pa-4" @bind-Value="contrast" Min="0" Max="1000" Color="Color.Info">contrast: @contrast.ToString()</MudSlider>
+    <MudSlider Class="pa-4" @bind-Value="height" Min="0" Max="1000" Color="Color.Info">H: @height.ToString()</MudSlider>
+    <MudSlider Class="pa-4" @bind-Value="width" Min="0" Max="1000" Color="Color.Info">W: @width.ToString()</MudSlider>
     <MudIconButton Class="pa-md-6 mx-lg-auto" HtmlTag="label"
             Color="Color.Dark"
             Icon="@Icons.Filled.AttachFile"
@@ -41,6 +43,9 @@
 
         await using (var ctx = await helper_canvas.GetContext2DAsync())
         {
+            string size = await js.InvokeAsync<string>("imgSize", "test");
+            width = double.Parse(size.Split("#")[0]);
+            height = double.Parse(size.Split("#")[1]);
             await ctx.ClearRectAsync(0, 0, width, height);
             await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
             await ctx.DrawImageAsync("test", 0, 0, width, height);
@@ -61,7 +66,9 @@
 
     private async Task DownloadImage(string url)
     {
-        await ImageUtils.FilterImage(js, "test");
+
+        await js.InvokeAsync<object>("saveAsFile", "test.png");
+
     }
 
 }
