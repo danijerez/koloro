@@ -33,6 +33,8 @@
         }
     </script>
 
+
+
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
 
@@ -58,6 +60,13 @@
             var a = new Audio(url);
             a.load();
             a.play();
+        }
+
+        function imgSize(id) {
+            var myImg = document.getElementById(id);
+            var realWidth = myImg.naturalWidth;
+            var realHeight = myImg.naturalHeight;
+            return realWidth + '#' + realHeight
         }
 
     </script>
