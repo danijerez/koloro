@@ -12,7 +12,7 @@
       "ApiGroupGenerator.dll": "sha256-Ri5I1DInhcXeO8qtNM5cyDN9uxDADH6re9mAePpKOak=",
       "Microsoft.AspNetCore.Components.dll": "sha256-gzL572IOU4WFKU9E0UVI\/HLiGRq4SxYG+5aYRgmTmxM=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-XC8rXXlbP9j2iM6roffsdOTFRDfuqebGJ+7C\/q2xbfI=",
-      "Microsoft.AspNetCore.Components.Web.dll": "sha256-yardw6js5H1oEyI2GY\/M1fN2li1YHV5Km7tQvNnYBLU=",
+      "Microsoft.AspNetCore.Components.Web.dll": "sha256-IPYoEStqkBEOicpOPJJwmTcwTld3cWQNYk9MUPpH2zc=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-fvbh+eaZIY7oPs6G+hK4G+lyQm01hVNJJMSvLdEuPsY=",
       "Microsoft.Extensions.Configuration.dll": "sha256-bZZ69\/58+BnN9G33FpTd2iXAdfgLbBnDUiiKxfaZ7IU=",
       "Microsoft.Extensions.Configuration.Abstractions.dll": "sha256-7mxFRRlriJzO95ZBz4cmDSFADogdaoDy8MxzQoNtwaU=",
@@ -27,7 +27,7 @@
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-eF6xbzCQBK4yEs2CC3wnJR1I1ZWXwlJp7GJ4R1UMM14=",
       "MudBlazor.dll": "sha256-x9tYgbGiEJWi53rCYVWErPbmFsQbzPVgYGn9WoPcFnw=",
       "System.IO.Pipelines.dll": "sha256-qZYTUS+ga7CydtH54fYPbehFCvx3B49I74G8dxreTog=",
-      "koloro.dll": "sha256-WvFWdquu0+McoyEcy1Ujy17+mydZiduJXkiofAQD8WY=",
+      "koloro.dll": "sha256-ilqwhSLDLwqU211VaVaxGZAz\/C+miZYQubnk43R3FGA=",
       "Microsoft.CSharp.dll": "sha256-w5bHkCJmuvUUIPi\/NcBMP3bDX627BHUrftfiBtmena4=",
       "System.Collections.Concurrent.dll": "sha256-emXgPVWJeO2Fn\/zxHvrm7zBVSF2wO\/tcB5WoHviWI9c=",
       "System.Collections.Immutable.dll": "sha256-w1mmnJ+B4Pp8l9u\/\/C4o4chLEY2KS6NdrS5NezThAPc=",
@@ -55,7 +55,7 @@
       "System.Text.Encodings.Web.dll": "sha256-MjKzlKJU7sGHURlvpLznB6MNOzZh+JJ0sPYYvlUVHRA=",
       "System.Text.Json.dll": "sha256-siFQJ\/MLX0mD1SlgG7MLlv6iWqkMCmPLxqTmpZwbqlY=",
       "System.Text.RegularExpressions.dll": "sha256-7LncyOascI+4xt38HNcr2dqafydnsRkVU3Dmg\/veIoM=",
-      "System.Private.CoreLib.dll": "sha256-16IJIZCAkUqjw6EZC2yccMpVXHPnV9zQvSd06hQfLVQ="
+      "System.Private.CoreLib.dll": "sha256-jesCBW8vr4re8ol7BM\/C1qCFyG5x+A9Ho0cIRrC9AAg="
     },
     "lazyAssembly": null,
     "pdb": null,
