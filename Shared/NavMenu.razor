@@ -1,8 +1,9 @@
 ﻿@using MudBlazor
+@inject NavigationManager MyNavigationManager
 
 <MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.Grey.Darken4};")" Fixed="true">
-    <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.ColorLens" Link="/"></MudIconButton>
-    <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Save" Color="Color.Inherit"><MudLink Href="/counter" Underline="Underline.None">Counter</MudLink></MudButton>
+    <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.ColorLens" Link=@(MyNavigationManager.Uri)></MudIconButton>
+    <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Save" Color="Color.Inherit"><MudLink Href="@(MyNavigationManager.Uri+"/counter")" Underline="Underline.None">Counter</MudLink></MudButton>
     <MudSpacer />
     <MudIconButton Variant="Variant.Text" Icon="@Icons.Custom.Brands.GitHub" Target="_blank" Color="Color.Inherit" Link="https://github.com/danijerez" />
 </MudAppBar>

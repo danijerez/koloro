@@ -11,4 +11,11 @@ html, body {
 
 .grid {
     margin-top: 72px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center {
+    display: block;
+    margin: 0 auto
 }
