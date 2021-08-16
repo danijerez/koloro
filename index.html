@@ -9,6 +9,7 @@
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="koloro.styles.css" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -19,7 +20,35 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
+
+    <script type="text/javascript">
+        function saveAsFile(filename) {
+            const canvas = document.getElementById('helper_canvas');
+            const ctx = canvas.getContext('2d');
+            var myImage = canvas.toDataURL("image/png");
+            console.log(myImage);
+
+            var a = document.createElement("a"); //Create <a>
+            a.href = myImage; //Image Base64 Goes here
+            a.download = filename; //File name Here
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            resolve(filename);
+
+        }
+
+        function playSound(url) {
+            var a = new Audio(url);
+            a.load();
+            a.play();
+        }
+
+    </script>
+
 </body>
 
 </html>
