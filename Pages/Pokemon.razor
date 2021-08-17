@@ -1,0 +1,72 @@
+﻿@page "/pokemon"
+@using MudBlazor
+@using koloro.Core.Models
+@using koloro.Core.RestClients
+@using Excubo.Blazor.Canvas
+@inject HttpClient Http
+
+<Canvas id="helper_canvas" @ref="helper_canvas" width="475" height="500" hidden />
+<MudAppBar Color="Color.Tertiary" Class="menu_top">
+
+</MudAppBar>
+<div class="grid">
+    @if (!IsLoading)
+    {
+        <MudGrid Justify="Justify.Center">
+
+            @foreach (var pokemon in ListPokemonData)
+            {
+                <MudItem>
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">@pokemon.id ♦ @pokemon.name</MudText>
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                        <img class="size_pokemon" width="250" height="250" src=@pokemon.sprites.other.OfficialArtwork.front_default />
+                        <MudCardActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+
+        </MudGrid>
+    }
+    else
+    {
+        <MudProgressLinear Color="Color.Info" Value="@progress" Min="0" Max="100" />
+    }
+</div>
+
+@code{
+
+    private bool IsLoading = true;
+    private List<PokemonData> ListPokemonData;
+    private PokemonResponse ListNames;
+    private double progress = 0;
+    private Canvas helper_canvas;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        ListPokemonData = new List<PokemonData>();
+
+        ListNames = await PokeApiRestClient.Pokemon(Http, 0, 9999);
+        var PokemonPag = await PokeApiRestClient.Pokemon(Http, 0, 24);
+
+        foreach (var pokemon in PokemonPag.results)
+        {
+            ListPokemonData.Add(await PokeApiRestClient.PokemonDataByName(Http, pokemon.name));
+            progress = ListPokemonData.Count * 100 / 25;
+            StateHasChanged();
+        }
+
+        IsLoading = false;
+
+    }
+}
