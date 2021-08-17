@@ -1,0 +1,102 @@
+﻿@page "/experiment"
+@using MudBlazor
+@using Excubo.Blazor.Canvas
+@inject IJSRuntime js
+
+<InputFile id="fileInput" OnChange="UploadFiles" hidden accept=".jpg, .jpeg, .png" />
+
+<MudAppBar Color="Color.Tertiary" Class="menu_top">
+    <MudSlider Class="pa-4" @bind-Value="saturate" Min="0" Max="100" Color="Color.Info">saturate: @saturate.ToString()</MudSlider>
+    <MudSlider Class="pa-4" @bind-Value="grayscale" Min="0" Max="100" Color="Color.Info">grayscale: @grayscale.ToString()</MudSlider>
+    <MudSlider Class="pa-4" @bind-Value="brightness" Min="0" Max="200" Color="Color.Info">brightness: @brightness.ToString()</MudSlider>
+    <MudSlider Class="pa-4" @bind-Value="contrast" Min="0" Max="1000" Color="Color.Info">contrast: @contrast.ToString()</MudSlider>
+    <MudSlider Class="pa-4" @bind-Value="height" Min="0" Max="1000" Color="Color.Info">↕️ @height.ToString()</MudSlider>
+    <MudSlider Class="pa-4" @bind-Value="width" Min="0" Max="1000" Color="Color.Info">↔️ @width.ToString()</MudSlider>
+    <MudCheckBox Class="pa-4" @bind-Checked="@CheckBoxBlack"  CheckedIcon="@Icons.Material.Filled.Star" UncheckedIcon="@Icons.Material.Filled.StarOutline"></MudCheckBox>
+    <MudIconButton Class="pa-md-6 mx-lg-auto" HtmlTag="label"
+                   Color="Color.Dark"
+                   Icon="@Icons.Filled.AttachFile"
+                   for="fileInput" />
+    <MudIconButton Class="pa-md-6 mx-lg-auto" Icon="@Icons.Material.Filled.FileDownload" Color="Color.Secondary" OnClick="() => { DownloadImage(imgUrl); }"></MudIconButton>
+
+
+</MudAppBar>
+
+
+<div class="grid">
+    <Canvas class="canvas" height="@height" width="@width" id="helper_canvas" @ref="helper_canvas" />
+</div>
+<img id="test" src=@imgUrl hidden>
+
+
+@code{
+    public bool LastCheck { get; set; } = true;
+    public bool CheckBoxBlack { get; set; } = true;
+    private Canvas helper_canvas;
+    private string imgUrl = string.Empty;
+    public double saturate = 0;
+    public double grayscale = 100;
+    public double brightness = 200;
+    public double contrast = 1000;
+
+    public double height = 500;
+    public double width = 500;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        await using (var ctx = await helper_canvas.GetContext2DAsync())
+        {
+            if(CheckBoxBlack != LastCheck)
+            {
+                if (CheckBoxBlack)
+                    BlackAndWhite();
+                else
+                    Normal();
+            }
+
+            await ctx.ClearRectAsync(0, 0, width, height);
+            await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
+            await ctx.DrawImageAsync("test", 0, 0, width, height);
+        }
+
+    }
+
+    private void Normal()
+    {
+        saturate = 100;
+        grayscale = 0;
+        brightness = 100;
+        contrast = 100;
+        LastCheck = CheckBoxBlack;
+    }
+
+    private void BlackAndWhite()
+    {
+        saturate = 0;
+        grayscale = 100;
+        brightness = 200;
+        contrast = 1000;
+        LastCheck = CheckBoxBlack;
+    }
+
+    IList<IBrowserFile> files = new List<IBrowserFile>();
+    private async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+        IBrowserFile imgFile = e.File;
+        var buffers = new byte[imgFile.Size];
+
+        await imgFile.OpenReadStream().ReadAsync(buffers);
+        string imageType = imgFile.ContentType;
+        imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(buffers)}";
+
+    }
+
+    private async Task DownloadImage(string url)
+    {
+
+        await js.InvokeAsync<object>("saveAsFile", "test.png");
+
+    }
+
+}

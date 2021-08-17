@@ -7,6 +7,26 @@
 
 <Canvas id="helper_canvas" @ref="helper_canvas" width="475" height="500" hidden />
 <MudAppBar Color="Color.Tertiary" Class="menu_top">
+    <MudForm @ref="form" @bind-IsValid="@success">
+        <MudGrid>
+            <MudItem xs="3">
+                <MudTextField @bind-Value="nametofind" Label="id/name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
+            </MudItem>
+            <MudItem xs="3">
+                <MudTextField @bind-Value="offset" Label="offset" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
+            </MudItem>
+            <MudItem xs="3">
+                <MudTextField @bind-Value="limit" Label="limit" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
+            </MudItem>
+            <MudItem xs="3">
+                <MudSlider @bind-Value="size" Min="125" Max="1000">@(size/2)x@(size/2)</MudSlider>
+            </MudItem>
+        </MudGrid>
+    </MudForm>
+
+    <MudSpacer></MudSpacer>
+    <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Error" OnClick="@(()=>ResetForm())"></MudIconButton>
+    <MudIconButton Icon="@Icons.Material.Filled.Send" Color="Color.Dark" OnClick="@(()=>SendForm())"></MudIconButton>
 
 </MudAppBar>
 <div class="grid">
@@ -26,7 +46,7 @@
                                 <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
                             </CardHeaderActions>
                         </MudCardHeader>
-                        <img class="size_pokemon" width="250" height="250" src=@pokemon.sprites.other.OfficialArtwork.front_default />
+                        <img id="@pokemon.name" class="size_pokemon" width="@size/2" height="@size/2" src=@pokemon.sprites.other.OfficialArtwork.front_default />
                         <MudCardActions>
                             <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
                             <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
@@ -50,23 +70,54 @@
     private PokemonResponse ListNames;
     private double progress = 0;
     private Canvas helper_canvas;
+    private int offset = 0;
+    private int limit = 12;
+    private int size = 250;
+    private string nametofind = string.Empty;
+    private MudForm form;
+    private bool success;
+
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadPokemon();
+        IsLoading = false;
+    }
 
+    private async Task SendForm()
+    {
+        await LoadPokemon();
+        IsLoading = false;
+    }
+
+    private async Task ResetForm()
+    {
+        offset = 0;
+        limit = 12;
+        size = 250;
+    }
+
+    private async Task LoadPokemon()
+    {
+        progress = 0;
+        IsLoading = true;
         ListPokemonData = new List<PokemonData>();
 
-        ListNames = await PokeApiRestClient.Pokemon(Http, 0, 9999);
-        var PokemonPag = await PokeApiRestClient.Pokemon(Http, 0, 24);
-
-        foreach (var pokemon in PokemonPag.results)
+        if (!string.IsNullOrEmpty(nametofind))
         {
-            ListPokemonData.Add(await PokeApiRestClient.PokemonDataByName(Http, pokemon.name));
-            progress = ListPokemonData.Count * 100 / 25;
-            StateHasChanged();
+            ListPokemonData.Add(await PokeApiRestClient.PokemonDataByName(Http, nametofind));
         }
+        else
+        {
+            var PokemonPag = await PokeApiRestClient.Pokemon(Http, offset, limit);
 
-        IsLoading = false;
+            foreach (var pokemon in PokemonPag.results)
+            {
+                ListPokemonData.Add(await PokeApiRestClient.PokemonDataByName(Http, pokemon.name));
+                progress = ListPokemonData.Count * 100 / limit;
+                StateHasChanged();
+            }
+        }
 
     }
 }
