@@ -31,13 +31,6 @@ namespace koloro.Core.RestClients
         {
             var httpResponse = await http.GetAsync(string.Format("{0}/pokemon/{1}", host, name));
             var response = await httpResponse.Content.ReadFromJsonAsync<PokemonData>();
-
-            /*if (response != null)
-            {
-                var bytes = await http.GetByteArrayAsync(response.sprites.other.OfficialArtwork.front_default);
-                response.sprites.other.OfficialArtwork.front_default = "data:image/png;base64," + Convert.ToBase64String(bytes);
-            }*/
-
             return response;
         }
 
