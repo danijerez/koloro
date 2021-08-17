@@ -41,5 +41,11 @@ namespace koloro.Core.RestClients
             return response;
         }
 
+        public static async Task<string> UrlToBase64(HttpClient http, string url)
+        {
+            var bytes = await http.GetByteArrayAsync(url);
+            return "data:image/png;base64," + Convert.ToBase64String(bytes);
+        }
+
     }
 }

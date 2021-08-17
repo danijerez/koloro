@@ -4,8 +4,10 @@
 @using koloro.Core.RestClients
 @using Excubo.Blazor.Canvas
 @inject HttpClient Http
+@inject IJSRuntime js
 
 <Canvas id="helper_canvas" @ref="helper_canvas" width="475" height="500" hidden />
+<img id="img_helper" src="@b64_helper" hidden />
 <MudAppBar Color="Color.Tertiary" Class="menu_top">
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
@@ -37,19 +39,19 @@
             @foreach (var pokemon in ListPokemonData)
             {
                 <MudItem>
-                    <MudCard>
+                    <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten3};")">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.h6">@pokemon.id ♦ @pokemon.name</MudText>
+                                <MudText Typo="Typo.h6">@pokemon.id - @pokemon.name</MudText>
                             </CardHeaderContent>
                             <CardHeaderActions>
-                                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                                <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://www.pokemon.com/es/pokedex/" + pokemon.name)  />
                             </CardHeaderActions>
                         </MudCardHeader>
                         <img id="@pokemon.name" class="size_pokemon" width="@size/2" height="@size/2" src=@pokemon.sprites.other.OfficialArtwork.front_default />
                         <MudCardActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(pokemon.id, pokemon.name, pokemon.sprites.other.OfficialArtwork.front_default, true); }" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(pokemon.id, pokemon.name, pokemon.sprites.other.OfficialArtwork.front_default, false); }" Color="Color.Default" />
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
@@ -76,7 +78,12 @@
     private string nametofind = string.Empty;
     private MudForm form;
     private bool success;
+    private string b64_helper = string.Empty;
 
+    public double saturate = 0;
+    public double grayscale = 100;
+    public double brightness = 200;
+    public double contrast = 1000;
 
     protected override async Task OnInitializedAsync()
     {
@@ -92,6 +99,7 @@
 
     private async Task ResetForm()
     {
+        nametofind = string.Empty;
         offset = 0;
         limit = 12;
         size = 250;
@@ -119,5 +127,26 @@
             }
         }
 
+    }
+
+    private async Task DownloadImage(int id, string name, string url, bool blackwhite)
+    {
+
+        b64_helper = await PokeApiRestClient.UrlToBase64(Http, url);
+        StateHasChanged();
+
+        await using (var ctx = await helper_canvas.GetContext2DAsync())
+        {
+            await ctx.ClearRectAsync(0, 0, 475, 500);
+            await ctx.FontAsync("25px Helvetica");
+            await ctx.FillTextAsync(id + " - " + name, 0, 475);
+            if(blackwhite)
+                await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
+            await ctx.DrawImageAsync("img_helper", 0, 0, 475, 475);
+        }
+
+        StateHasChanged();
+
+        await js.InvokeAsync<object>("saveAsFile", $"{name}.png");
     }
 }
