@@ -12,13 +12,13 @@
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
             <MudItem xs="3">
-                <MudTextField Disabled="true" @bind-Value="nametofind" Label="id/name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="nametofind" Label="id/name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField Disabled="true" @bind-Value="offset" Label="offset" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="offset" Label="offset" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField Disabled="true" @bind-Value="limit" Label="limit" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="limit" Label="limit" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
         </MudGrid>
     </MudForm>
@@ -98,13 +98,15 @@
 
     private async Task LoadDigimon()
     {
-        ListDigimonData = await Http.GetFromJsonAsync<List<DigimonData>>("data/digimon.json");
-
+        if (!string.IsNullOrEmpty(nametofind))
+            ListDigimonData = ListDigimonData.Where(x => x.name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase)).ToList();
+        else
+            ListDigimonData = (await Http.GetFromJsonAsync<List<DigimonData>>("data/digimon.json")).Skip(offset).Take(limit).ToList();
     }
 
     private async Task DownloadImage(DigimonData digimon, bool blackwhite)
     {
-        var url = SelectUrl(digimon);
+        var url = "https://cors.bridged.cc/" + SelectUrl(digimon);
         b64_helper = await PokeApiRestClient.UrlToBase64(Http, url);
         var dimensions = (await js.InvokeAsync<string>("sizeImg", b64_helper)).Split("#");
         width = double.Parse(dimensions[0]);
