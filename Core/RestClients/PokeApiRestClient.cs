@@ -36,7 +36,6 @@ namespace koloro.Core.RestClients
 
         public static async Task<string> UrlToBase64(HttpClient http, string url)
         {
-            http.DefaultRequestHeaders.Add("Access-Control-Allow-Origin", "*");
             var format = "data:image/png;base64,";
             var bytes = await http.GetByteArrayAsync(url);
             if (url.Contains(".svg"))
