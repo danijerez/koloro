@@ -6,9 +6,9 @@
 @inject HttpClient Http
 @inject IJSRuntime js
 
-<Canvas id="helper_canvas" @ref="helper_canvas" width="475" height="500" hidden />
+<Canvas id="helper_canvas" @ref="helper_canvas" width="@width" height="@(height+25)" hidden />
 <img id="img_helper" src="@b64_helper" hidden />
-<MudAppBar Color="Color.Tertiary" Class="menu_top">
+<MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.BlueGrey.Lighten5};")" Class="menu_top">
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
             <MudItem xs="3">
@@ -31,10 +31,7 @@
             </MudItem>
         </MudGrid>
     </MudForm>
-
-
     <MudSpacer></MudSpacer>
-    <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Error" OnClick="@(()=>ResetForm())"></MudIconButton>
     <MudIconButton Icon="@Icons.Material.Filled.Send" Color="Color.Dark" OnClick="@(()=>SendForm())"></MudIconButton>
 
 </MudAppBar>
@@ -46,7 +43,7 @@
             @foreach (var pokemon in ListPokemonData)
             {
                 <MudItem>
-                    <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten3};")">
+                    <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten4};")">
                         <MudCardHeader>
                             <CardHeaderContent>
                                 <MudText Typo="Typo.h6">@pokemon.id - @pokemon.name</MudText>
@@ -59,6 +56,7 @@
                         <MudCardActions>
                             <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(pokemon, true); }" Color="Color.Default" />
                             <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(pokemon, false); }" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.PlayArrow" OnClick="() => { PlayAudio(pokemon); }" Color="Color.Default" />
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
@@ -82,6 +80,8 @@
     private int offset = 0;
     private int limit = 14;
     private int size = 250;
+    private double width = 0;
+    private double height = 0;
     private string nametofind = string.Empty;
     private MudForm form;
     private bool success;
@@ -105,14 +105,6 @@
     {
         await LoadPokemon();
         IsLoading = false;
-    }
-
-    private async Task ResetForm()
-    {
-        nametofind = string.Empty;
-        offset = 0;
-        limit = 12;
-        size = 250;
     }
 
     private async Task LoadPokemon()
@@ -143,16 +135,20 @@
     {
         var url = SelectUrl(pokemon);
         b64_helper = await PokeApiRestClient.UrlToBase64(Http, url);
+        var dimensions = (await js.InvokeAsync<string>("sizeImg", b64_helper)).Split("#");
+        width = double.Parse(dimensions[0]);
+        height = double.Parse(dimensions[1]);
+
         StateHasChanged();
 
         await using (var ctx = await helper_canvas.GetContext2DAsync())
         {
-            await ctx.ClearRectAsync(0, 0, 475, 500);
-            await ctx.FontAsync("25px Helvetica");
-            await ctx.FillTextAsync(pokemon.id + " - " + pokemon.name, 0, 475);
+            await ctx.ClearRectAsync(0, 0, double.MaxValue, double.MaxValue);
             if(blackwhite)
                 await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
-            await ctx.DrawImageAsync("img_helper", 0, 0, 475, 475);
+            await ctx.DrawImageAsync("img_helper", 0, 0, width, height);
+            await ctx.FontAsync("16px Helvetica");
+            await ctx.FillTextAsync(pokemon.id + " - " + pokemon.name, 0, height+25);
         }
 
         StateHasChanged();
@@ -163,5 +159,11 @@
     private string SelectUrl(PokemonData pokemon)
     {
         return pokemon.sprites.other.dream_world.front_default != null && enumValue.Equals(StyleArt.DreamWorld) ? pokemon.sprites.other.dream_world.front_default : pokemon.sprites.other.OfficialArtwork.front_default;
+    }
+
+    private async Task PlayAudio(PokemonData pokemon)
+    {
+        var url = $"https://api.triplydb.com/datasets/academy/pokemon/assets/download?fileName={pokemon.name}.ogg";
+        await js.InvokeVoidAsync("playSound", url);
     }
 }

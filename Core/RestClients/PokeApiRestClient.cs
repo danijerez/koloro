@@ -1,10 +1,7 @@
 ﻿using koloro.Core.Models;
 using Microsoft.AspNetCore.WebUtilities;
-using Svg;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
