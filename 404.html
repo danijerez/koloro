@@ -49,6 +49,16 @@
             a.play();
         }
 
+        async function sizeImg(b64) {
+            const img = new Image();
+            img.src = b64;
+            return new Promise(resolve => {
+                img.onload = function () {
+                    resolve(img.naturalWidth + '#' + img.naturalHeight);
+                }
+            });            
+        }
+
     </script>
 
 </body>
