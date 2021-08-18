@@ -11,10 +11,17 @@
     <link href="css/app.css" rel="stylesheet" />
     <link href="koloro.styles.css" rel="stylesheet" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+
+    <div id="app">
+        <div style="position:absolute; top:30vh; width:100%; text-align:center">
+            <div class="fa fa-adjust fa-spin fa-3x fa-fw"></div>
+            <h1>Koloro</h1>
+        </div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
@@ -56,7 +63,7 @@
                 img.onload = function () {
                     resolve(img.naturalWidth + '#' + img.naturalHeight);
                 }
-            });            
+            });
         }
 
     </script>

@@ -56,7 +56,7 @@
                         <MudCardActions>
                             <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(pokemon, true); }" Color="Color.Default" />
                             <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(pokemon, false); }" Color="Color.Default" />
-                            <MudIconButton Icon="@Icons.Material.Filled.PlayArrow" OnClick="() => { PlayAudio(pokemon); }" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Audiotrack" OnClick="() => { PlayAudio(pokemon); }" Color="Color.Default" />
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
@@ -97,6 +97,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        Random rnd = new Random();
+        offset = rnd.Next(1, 900);
         await LoadPokemon();
         IsLoading = false;
     }
