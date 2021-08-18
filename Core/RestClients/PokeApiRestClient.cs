@@ -1,7 +1,10 @@
 ﻿using koloro.Core.Models;
 using Microsoft.AspNetCore.WebUtilities;
+using Svg;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -36,9 +39,15 @@ namespace koloro.Core.RestClients
 
         public static async Task<string> UrlToBase64(HttpClient http, string url)
         {
+            var format = "data:image/png;base64,";
             var bytes = await http.GetByteArrayAsync(url);
-            return "data:image/png;base64," + Convert.ToBase64String(bytes);
+            if (url.Contains(".svg"))
+                format = "data:image/svg+xml;base64,";
+
+            return format + Convert.ToBase64String(bytes);
         }
+
+
 
     }
 }

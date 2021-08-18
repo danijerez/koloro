@@ -21,10 +21,17 @@
                 <MudTextField @bind-Value="limit" Label="limit" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudSlider @bind-Value="size" Min="125" Max="1000">@(size/2)x@(size/2)</MudSlider>
+                <MudSelect @bind-Value="enumValue"
+                           OffsetY="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Style" AdornmentColor="Color.Dark">
+                    @foreach (StyleArt item in Enum.GetValues(typeof(StyleArt)))
+                    {
+                        <MudSelectItem Value="@item">@item</MudSelectItem>
+                    }
+                </MudSelect>
             </MudItem>
         </MudGrid>
     </MudForm>
+
 
     <MudSpacer></MudSpacer>
     <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Error" OnClick="@(()=>ResetForm())"></MudIconButton>
@@ -48,10 +55,10 @@
                                 <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://www.pokemon.com/es/pokedex/" + pokemon.name)  />
                             </CardHeaderActions>
                         </MudCardHeader>
-                        <img id="@pokemon.name" class="size_pokemon" width="@size/2" height="@size/2" src=@pokemon.sprites.other.OfficialArtwork.front_default />
+                        <img id="@pokemon.name" class="size_pokemon" width="@size/2" height="@size/2" src=@SelectUrl(pokemon) />
                         <MudCardActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(pokemon.id, pokemon.name, pokemon.sprites.other.OfficialArtwork.front_default, true); }" Color="Color.Default" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(pokemon.id, pokemon.name, pokemon.sprites.other.OfficialArtwork.front_default, false); }" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(pokemon, true); }" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(pokemon, false); }" Color="Color.Default" />
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
@@ -61,7 +68,7 @@
     }
     else
     {
-        <MudProgressLinear Color="Color.Info" Value="@progress" Min="0" Max="100" />
+        <MudProgressLinear Style="height: 20px; margin-top: -10px;" Color="Color.Success" Value="@progress" Min="0" Max="100" />
     }
 </div>
 
@@ -73,7 +80,7 @@
     private double progress = 0;
     private Canvas helper_canvas;
     private int offset = 0;
-    private int limit = 12;
+    private int limit = 14;
     private int size = 250;
     private string nametofind = string.Empty;
     private MudForm form;
@@ -84,6 +91,9 @@
     public double grayscale = 100;
     public double brightness = 200;
     public double contrast = 1000;
+
+    public enum StyleArt { Official, DreamWorld }
+    private StyleArt enumValue { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -129,9 +139,9 @@
 
     }
 
-    private async Task DownloadImage(int id, string name, string url, bool blackwhite)
+    private async Task DownloadImage(PokemonData pokemon, bool blackwhite)
     {
-
+        var url = SelectUrl(pokemon);
         b64_helper = await PokeApiRestClient.UrlToBase64(Http, url);
         StateHasChanged();
 
@@ -139,7 +149,7 @@
         {
             await ctx.ClearRectAsync(0, 0, 475, 500);
             await ctx.FontAsync("25px Helvetica");
-            await ctx.FillTextAsync(id + " - " + name, 0, 475);
+            await ctx.FillTextAsync(pokemon.id + " - " + pokemon.name, 0, 475);
             if(blackwhite)
                 await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
             await ctx.DrawImageAsync("img_helper", 0, 0, 475, 475);
@@ -147,6 +157,11 @@
 
         StateHasChanged();
 
-        await js.InvokeAsync<object>("saveAsFile", $"{name}.png");
+        await js.InvokeAsync<object>("saveAsFile", $"{pokemon.name}.png");
+    }
+
+    private string SelectUrl(PokemonData pokemon)
+    {
+        return pokemon.sprites.other.dream_world.front_default != null && enumValue.Equals(StyleArt.DreamWorld) ? pokemon.sprites.other.dream_world.front_default : pokemon.sprites.other.OfficialArtwork.front_default;
     }
 }
