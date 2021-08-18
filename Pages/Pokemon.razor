@@ -97,8 +97,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Random rnd = new Random();
-        offset = rnd.Next(1, 900);
         await LoadPokemon();
         IsLoading = false;
     }
@@ -117,7 +115,7 @@
 
         if (!string.IsNullOrEmpty(nametofind))
         {
-            ListPokemonData.Add(await PokeApiRestClient.PokemonDataByName(Http, nametofind));
+            ListPokemonData.Add(await PokeApiRestClient.PokemonDataByName(Http, nametofind.ToLower()));
         }
         else
         {
