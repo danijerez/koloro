@@ -17,3 +17,37 @@ html, body {
     margin: 0 auto
 }
 
+.cardSize {
+    width: 250px;
+    height: 250px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cardFont {
+    font-size: 25px;
+}
+
+.miniFont {
+    font-size: 1.5vmin;
+}
+
+@media screen and (max-width: 479px) {
+    .cardSize {
+        width: 125px;
+        height: 125px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .cardFont {
+        font-size: 15px;
+    }
+    .deskContent {
+        display: none;
+    }
+}
+
+
+

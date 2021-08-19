@@ -3,10 +3,10 @@
 
 <MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.Grey.Darken4};")" Fixed="true">
     <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.ColorLens" Link=@(NavManager.BaseUri)></MudIconButton>
-    <MudButton Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Filled.CatchingPokemon" Link="@(NavManager.BaseUri+"pokemon")">Pokemon</MudButton>
-    <MudButton Variant="Variant.Text" Color="Color.Inherit" StartIcon="@Icons.Material.Filled.Construction" Link="@(NavManager.BaseUri+"digimon")">Digimon</MudButton>
+    <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="@Icons.Material.Filled.CatchingPokemon" Link="@(NavManager.BaseUri+"pokemon")"></MudIconButton><div class="deskContent">Pokemon</div>
+    <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="fas fa-pastafarianism" Link="@(NavManager.BaseUri+"digimon")"></MudIconButton><div class="deskContent">Digimon</div>
 
     <MudSpacer />
-    <h1>koloro</h1>
+    <h1 class="deskContent">koloro</h1>
     <MudIconButton Variant="Variant.Text" Icon="@Icons.Custom.Brands.GitHub" Target="_blank" Color="Color.Inherit" Link="https://github.com/danijerez" />
 </MudAppBar>

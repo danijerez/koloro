@@ -12,7 +12,7 @@
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
             <MudItem xs="3">
-                <MudTextField @bind-Value="nametofind" Label="id/name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="nametofind" Label="name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
                 <MudTextField @bind-Value="offset" Label="offset" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
@@ -23,7 +23,7 @@
         </MudGrid>
     </MudForm>
     <MudSpacer></MudSpacer>
-    <MudIconButton Icon="@Icons.Material.Filled.Send" Color="Color.Dark" OnClick="@(()=>SendForm())"></MudIconButton>
+    <MudIconButton Icon="fas fa-paper-plane" Color="Color.Dark" OnClick="@(()=>SendForm())"></MudIconButton>
 
 </MudAppBar>
 <div class="grid">
@@ -37,13 +37,13 @@
                     <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten4};")">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.h6">@digimon.name</MudText>
+                                <div class="cardFont">@digimon.name</div>
                             </CardHeaderContent>
                             <CardHeaderActions>
                                 <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://digimon.fandom.com/es/wiki/" + digimon.name)  />
                             </CardHeaderActions>
                         </MudCardHeader>
-                        <img id="@digimon.name" class="size_pokemon" width="@size/2" height="@size/2" src=@SelectUrl(digimon) />
+                        <img id="@digimon.name" class="cardSize" src=@SelectUrl(digimon) />
                         <MudCardActions>
                             <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(digimon, true); }" Color="Color.Default" />
                             <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(digimon, false); }" Color="Color.Default" />

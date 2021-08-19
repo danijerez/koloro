@@ -12,27 +12,27 @@
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
             <MudItem xs="3">
-                <MudTextField @bind-Value="nametofind" Label="id/name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField  @bind-Value="nametofind" Label="id/name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="offset" Label="offset" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField  @bind-Value="offset" Label="offset" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
                 <MudTextField @bind-Value="limit" Label="limit" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudSelect @bind-Value="enumValue"
+                <MudSelect  @bind-Value="enumValue"
                            OffsetY="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Style" AdornmentColor="Color.Dark">
                     @foreach (StyleArt item in Enum.GetValues(typeof(StyleArt)))
                     {
-                        <MudSelectItem Value="@item">@item</MudSelectItem>
+                        <MudSelectItem Value="@item"><div class="miniFont">@item</div></MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
         </MudGrid>
     </MudForm>
     <MudSpacer></MudSpacer>
-    <MudIconButton Icon="@Icons.Material.Filled.Send" Color="Color.Dark" OnClick="@(()=>SendForm())"></MudIconButton>
+    <MudIconButton Icon="fas fa-paper-plane" Color="Color.Dark" OnClick="@(()=>SendForm())"></MudIconButton>
 
 </MudAppBar>
 <div class="grid">
@@ -46,13 +46,13 @@
                     <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten4};")">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.h6">@pokemon.id - @pokemon.name</MudText>
+                                <div class="cardFont">@pokemon.id - @pokemon.name</div>
                             </CardHeaderContent>
                             <CardHeaderActions>
                                 <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://www.pokemon.com/es/pokedex/" + pokemon.name)  />
                             </CardHeaderActions>
                         </MudCardHeader>
-                        <img id="@pokemon.name" class="size_pokemon" width="@size/2" height="@size/2" src=@SelectUrl(pokemon) />
+                        <img id="@pokemon.name" class="cardSize" src=@SelectUrl(pokemon) />
                         <MudCardActions>
                             <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(pokemon, true); }" Color="Color.Default" />
                             <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(pokemon, false); }" Color="Color.Default" />
