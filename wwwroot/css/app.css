@@ -33,7 +33,7 @@ html, body {
     font-size: 1.5vmin;
 }
 
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 530px) {
     .cardSize {
         width: 125px;
         height: 125px;
