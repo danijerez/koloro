@@ -4,10 +4,7 @@
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
-
-<MudLayout Style="@($"color:{Colors.Shades.White};background:{Colors.Shades.White};")">
+<MudLayout>
     <NavMenu />
-    <MudMainContent>
-        @Body
-    </MudMainContent>
+    @Body
 </MudLayout>

@@ -5,26 +5,26 @@
 
 <InputFile id="fileInput" OnChange="UploadFiles" hidden accept=".jpg, .jpeg, .png" />
 
-<MudAppBar Color="Color.Tertiary" Class="menu_top">
+<MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.BlueGrey.Lighten5};")" Class="menu_top">
     <MudSlider Class="pa-4" @bind-Value="saturate" Min="0" Max="100" Color="Color.Info">saturate: @saturate.ToString()</MudSlider>
     <MudSlider Class="pa-4" @bind-Value="grayscale" Min="0" Max="100" Color="Color.Info">grayscale: @grayscale.ToString()</MudSlider>
     <MudSlider Class="pa-4" @bind-Value="brightness" Min="0" Max="200" Color="Color.Info">brightness: @brightness.ToString()</MudSlider>
     <MudSlider Class="pa-4" @bind-Value="contrast" Min="0" Max="1000" Color="Color.Info">contrast: @contrast.ToString()</MudSlider>
     <MudSlider Class="pa-4" @bind-Value="height" Min="0" Max="1000" Color="Color.Info">↕️ @height.ToString()</MudSlider>
     <MudSlider Class="pa-4" @bind-Value="width" Min="0" Max="1000" Color="Color.Info">↔️ @width.ToString()</MudSlider>
-    <MudCheckBox Class="pa-4" @bind-Checked="@CheckBoxBlack"  CheckedIcon="@Icons.Material.Filled.Star" UncheckedIcon="@Icons.Material.Filled.StarOutline"></MudCheckBox>
-    <MudIconButton Class="pa-md-6 mx-lg-auto" HtmlTag="label"
+    <MudCheckBox Style="margin-top:10px" @bind-Checked="@CheckBoxBlack"  CheckedIcon="@Icons.Material.Filled.InvertColorsOff" UncheckedIcon="@Icons.Material.Filled.InvertColors"></MudCheckBox>
+    <MudIconButton Class="pa-4" HtmlTag="label"
                    Color="Color.Dark"
                    Icon="@Icons.Filled.AttachFile"
                    for="fileInput" />
-    <MudIconButton Class="pa-md-6 mx-lg-auto" Icon="@Icons.Material.Filled.FileDownload" Color="Color.Secondary" OnClick="() => { DownloadImage(imgUrl).GetAwaiter(); }"></MudIconButton>
+    <MudIconButton Class="pa-4" Icon="@Icons.Material.Filled.FileDownload" Color="Color.Secondary" OnClick="() => { DownloadImage(imgUrl).GetAwaiter(); }"></MudIconButton>
 
 
 </MudAppBar>
 
 
-<div class="grid">
-    <Canvas class="canvas" height="@height" width="@width" id="helper_canvas" @ref="helper_canvas" />
+<div class="grid center">
+    <Canvas height="@height" width="@width" id="helper_canvas" @ref="helper_canvas" />
 </div>
 <img id="test" src=@imgUrl hidden>
 

@@ -2,7 +2,7 @@
 @inject NavigationManager NavManager
 
 <MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.Grey.Darken4};")" Fixed="true">
-    <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.ColorLens" Link=@(NavManager.BaseUri)></MudIconButton>
+    <MudIconButton Color="Color.Inherit" Icon="fas fa-flask" Link=@(NavManager.BaseUri+"experiment")></MudIconButton>
     <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="@Icons.Material.Filled.CatchingPokemon" Link="@(NavManager.BaseUri+"pokemon")"></MudIconButton><div class="deskContent">Pokemon</div>
     <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="fas fa-pastafarianism" Link="@(NavManager.BaseUri+"digimon")"></MudIconButton><div class="deskContent">Digimon</div>
 

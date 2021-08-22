@@ -9,12 +9,12 @@ html, body {
 }
 
 .grid {
-    margin-top: 72px;
+    margin-top: 140px;
 }
 
 .center {
-    display: block;
-    margin: 0 auto
+    display: grid;
+    place-items: center;
 }
 
 .cardSize {
