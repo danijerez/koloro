@@ -48,7 +48,7 @@
                     <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten4};")">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <div class="cardFont">@pokemon.id - @pokemon.name</div>
+                                <div class="cardFont">@pokemon.id # @pokemon.name</div>
                             </CardHeaderContent>
                             <CardHeaderActions>
                                 <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://www.pokemon.com/es/pokedex/" + pokemon.name) />
@@ -56,9 +56,9 @@
                         </MudCardHeader>
                         <img id="@pokemon.name" class="cardSize" src=@SelectUrl(pokemon) />
                         <MudCardActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(pokemon, true).GetAwaiter(); }" Color="Color.Default" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(pokemon, false).GetAwaiter(); }" Color="Color.Default" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Audiotrack" OnClick="() => { PlayAudio(pokemon).GetAwaiter(); }" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(pokemon, true).GetAwaiter(); }" Color="Color.Dark" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(pokemon, false).GetAwaiter(); }" Color="Color.Error" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Audiotrack" OnClick="() => { PlayAudio(pokemon).GetAwaiter(); }" Color="Color.Info" />
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
@@ -116,7 +116,7 @@
             AllPokemonData = await Http.GetFromJsonAsync<List<PokemonDto>>("data/pokemon.json");
 
         if (!string.IsNullOrEmpty(nametofind))
-            ListPokemonData = AllPokemonData.Where(x => x.name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            ListPokemonData = AllPokemonData.Where(x => x.name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase) || x.id.ToString().Contains(nametofind, StringComparison.InvariantCultureIgnoreCase)).Take(limit).ToList();
         else
             ListPokemonData = AllPokemonData.Skip(offset).Take(limit).ToList();
 
