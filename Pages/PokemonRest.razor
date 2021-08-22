@@ -1,4 +1,4 @@
-﻿@page "/pokemon"
+﻿@page "/pokemonrest"
 @using MudBlazor
 @using koloro.Core.Models
 @using koloro.Core.RestClients
@@ -38,11 +38,9 @@
 <div class="grid">
     @if (!IsLoading)
     {
-    <MudGrid Justify="Justify.Center">
+        <MudGrid Justify="Justify.Center">
 
-        @foreach (var pokemon in ListPokemonData)
-        {
-            @if (SelectUrl(pokemon) != null)
+            @foreach (var pokemon in ListPokemonData)
             {
                 <MudItem>
                     <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten4};")">
@@ -51,7 +49,7 @@
                                 <div class="cardFont">@pokemon.id - @pokemon.name</div>
                             </CardHeaderContent>
                             <CardHeaderActions>
-                                <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://www.pokemon.com/es/pokedex/" + pokemon.name) />
+                                <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://www.pokemon.com/es/pokedex/" + pokemon.name)  />
                             </CardHeaderActions>
                         </MudCardHeader>
                         <img id="@pokemon.name" class="cardSize" src=@SelectUrl(pokemon) />
@@ -63,25 +61,23 @@
                     </MudCard>
                 </MudItem>
             }
-        }
 
-    </MudGrid>
+        </MudGrid>
     }
     else
     {
-        <MudProgressLinear Style="height: 20px; margin-top: -10px;" Color="Color.Success" Indeterminate="true" />
+        <MudProgressLinear Style="height: 20px; margin-top: -10px;" Color="Color.Success" Value="@progress" Min="0" Max="100" />
     }
 </div>
 
 @code{
 
     private bool IsLoading = true;
-    private List<PokemonDto> ListPokemonData;
-    private List<PokemonDto> AllPokemonData;
+    private List<PokemonData> ListPokemonData;
+    private double progress = 0;
     private Canvas helper_canvas;
     private int offset = 0;
     private int limit = 14;
-    private int size = 250;
     private double width = 0;
     private double height = 0;
     private string nametofind = string.Empty;
@@ -111,20 +107,29 @@
 
     private async Task LoadPokemon()
     {
-
-        if(AllPokemonData == null || !AllPokemonData.Any())
-            AllPokemonData = await Http.GetFromJsonAsync<List<PokemonDto>>("data/pokemon.json");
+        progress = 0;
+        IsLoading = true;
+        ListPokemonData = new List<PokemonData>();
 
         if (!string.IsNullOrEmpty(nametofind))
-            ListPokemonData = AllPokemonData.Where(x => x.name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase)).ToList();
+        {
+            ListPokemonData.Add(await PokeApiRestClient.PokemonDataByName(Http, nametofind.ToLower()));
+        }
         else
-            ListPokemonData = AllPokemonData.Skip(offset).Take(limit).ToList();
+        {
+            var PokemonPag = await PokeApiRestClient.Pokemon(Http, offset, limit);
 
-        IsLoading = true;
+            foreach (var pokemon in PokemonPag.results)
+            {
+                ListPokemonData.Add(await PokeApiRestClient.PokemonDataByName(Http, pokemon.name));
+                progress = ListPokemonData.Count * 100 / limit;
+                StateHasChanged();
+            }
+        }
 
     }
 
-    private async Task DownloadImage(PokemonDto pokemon, bool blackwhite)
+    private async Task DownloadImage(PokemonData pokemon, bool blackwhite)
     {
         var url = SelectUrl(pokemon);
         b64_helper = await PokeApiRestClient.UrlToBase64(Http, url);
@@ -149,12 +154,12 @@
         await js.InvokeAsync<object>("saveAsFile", $"{pokemon.name}.png");
     }
 
-    private string SelectUrl(PokemonDto pokemon)
+    private string SelectUrl(PokemonData pokemon)
     {
-        return pokemon.art.dreamworld != null && enumValue.Equals(StyleArt.DreamWorld) ? pokemon.art.dreamworld : pokemon.art.official;
+        return pokemon.sprites.other.dream_world.front_default != null && enumValue.Equals(StyleArt.DreamWorld) ? pokemon.sprites.other.dream_world.front_default : pokemon.sprites.other.OfficialArtwork.front_default;
     }
 
-    private async Task PlayAudio(PokemonDto pokemon)
+    private async Task PlayAudio(PokemonData pokemon)
     {
         var url = $"https://api.triplydb.com/datasets/academy/pokemon/assets/download?fileName={pokemon.name}.ogg";
         await js.InvokeVoidAsync("playSound", url);

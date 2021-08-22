@@ -17,7 +17,7 @@
                    Color="Color.Dark"
                    Icon="@Icons.Filled.AttachFile"
                    for="fileInput" />
-    <MudIconButton Class="pa-md-6 mx-lg-auto" Icon="@Icons.Material.Filled.FileDownload" Color="Color.Secondary" OnClick="() => { DownloadImage(imgUrl); }"></MudIconButton>
+    <MudIconButton Class="pa-md-6 mx-lg-auto" Icon="@Icons.Material.Filled.FileDownload" Color="Color.Secondary" OnClick="() => { DownloadImage(imgUrl).GetAwaiter(); }"></MudIconButton>
 
 
 </MudAppBar>

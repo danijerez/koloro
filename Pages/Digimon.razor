@@ -45,8 +45,8 @@
                         </MudCardHeader>
                         <img id="@digimon.name" class="cardSize" src=@SelectUrl(digimon) />
                         <MudCardActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(digimon, true); }" Color="Color.Default" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(digimon, false); }" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(digimon, true).GetAwaiter(); }" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(digimon, false).GetAwaiter(); }" Color="Color.Default" />
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
@@ -64,11 +64,10 @@
 
     private bool IsLoading = true;
     private List<DigimonData> ListDigimonData;
-    private double progress = 0;
+    private List<DigimonData> AllDigimonData;
     private Canvas helper_canvas;
     private int offset = 0;
     private int limit = 14;
-    private int size = 250;
     private double width = 0;
     private double height = 0;
     private string nametofind = string.Empty;
@@ -98,10 +97,13 @@
 
     private async Task LoadDigimon()
     {
+        if (AllDigimonData == null || !AllDigimonData.Any())
+            AllDigimonData = (await Http.GetFromJsonAsync<List<DigimonData>>("data/digimon.json"));
+
         if (!string.IsNullOrEmpty(nametofind))
-            ListDigimonData = ListDigimonData.Where(x => x.name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            ListDigimonData = AllDigimonData.Where(x => x.name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase)).ToList();
         else
-            ListDigimonData = (await Http.GetFromJsonAsync<List<DigimonData>>("data/digimon.json")).Skip(offset).Take(limit).ToList();
+            ListDigimonData = AllDigimonData.Skip(offset).Take(limit).ToList();
     }
 
     private async Task DownloadImage(DigimonData digimon, bool blackwhite)
