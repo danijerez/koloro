@@ -12,16 +12,16 @@
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
             <MudItem xs="3">
-                <MudTextField  @bind-Value="nametofind" Label="id/name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="nametofind" Label="id/name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField  @bind-Value="offset" Label="offset" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="offset" Label="offset" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
                 <MudTextField @bind-Value="limit" Label="limit" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudSelect  @bind-Value="enumValue"
+                <MudSelect @bind-Value="enumValue"
                            OffsetY="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Style" AdornmentColor="Color.Dark">
                     @foreach (StyleArt item in Enum.GetValues(typeof(StyleArt)))
                     {
@@ -38,12 +38,11 @@
 <div class="grid">
     @if (!IsLoading)
     {
-    <MudGrid Justify="Justify.Center">
+        <MudGrid Justify="Justify.Center">
 
-        @foreach (var pokemon in ListPokemonData)
-        {
-            @if (SelectUrl(pokemon) != null)
+            @foreach (var pokemon in ListPokemonData)
             {
+
                 <MudItem>
                     <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten4};")">
                         <MudCardHeader>
@@ -62,10 +61,10 @@
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
-            }
-        }
 
-    </MudGrid>
+            }
+
+        </MudGrid>
     }
     else
     {
@@ -112,13 +111,13 @@
     private async Task LoadPokemon()
     {
 
-        if(AllPokemonData == null || !AllPokemonData.Any())
+        if (AllPokemonData == null || !AllPokemonData.Any())
             AllPokemonData = await Http.GetFromJsonAsync<List<PokemonDto>>("data/pokemon.json");
 
         if (!string.IsNullOrEmpty(nametofind))
-            ListPokemonData = AllPokemonData.Where(x => x.name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase) || x.id.ToString().Contains(nametofind, StringComparison.InvariantCultureIgnoreCase)).Take(limit).ToList();
+            ListPokemonData = AllPokemonData.Where(x => (x.name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase) || x.id.ToString().Contains(nametofind, StringComparison.InvariantCultureIgnoreCase)) && x.art.official != null).Take(limit).ToList();
         else
-            ListPokemonData = AllPokemonData.Skip(offset).Take(limit).ToList();
+            ListPokemonData = AllPokemonData.Where(x => x.art.official != null).Skip(offset).Take(limit).ToList();
 
         IsLoading = true;
 
@@ -137,11 +136,11 @@
         await using (var ctx = await helper_canvas.GetContext2DAsync())
         {
             await ctx.ClearRectAsync(0, 0, double.MaxValue, double.MaxValue);
-            if(blackwhite)
+            if (blackwhite)
                 await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
             await ctx.DrawImageAsync("img_helper", 0, 0, width, height);
             await ctx.FontAsync("16px Helvetica");
-            await ctx.FillTextAsync(pokemon.id + " - " + pokemon.name, 0, height+25);
+            await ctx.FillTextAsync(pokemon.id + " - " + pokemon.name, 0, height + 25);
         }
 
         StateHasChanged();
