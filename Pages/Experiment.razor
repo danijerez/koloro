@@ -23,32 +23,32 @@
 </MudAppBar>
 
 <MudPaper Style="@($"color:{Colors.Shades.White};background:{Colors.BlueGrey.Lighten5};")" Class="menu_top" Width="200px">
-    <MudItem Class="pa-4">
+    <MudItem Class="pa-3">
         <MudTextField @bind-Value="saturate" Label="saturate" Adornment="Adornment.Start" AdornmentIcon="fas fa-tint" AdornmentColor="Color.Dark"></MudTextField>
         <MudSlider @bind-Value="saturate" Min="0" Max="100" Color="Color.Info"></MudSlider>
     </MudItem>
 
-    <MudItem Class="pa-4">
+    <MudItem Class="pa-3">
         <MudTextField @bind-Value="grayscale" Label="grayscale" Adornment="Adornment.Start" AdornmentIcon="fas fa-chess-board" AdornmentColor="Color.Dark"></MudTextField>
         <MudSlider @bind-Value="grayscale" Min="0" Max="100" Color="Color.Info"></MudSlider>
     </MudItem>
 
-    <MudItem Class="pa-4">
+    <MudItem Class="pa-3">
         <MudTextField @bind-Value="brightness" Label="brightness" Adornment="Adornment.Start" AdornmentIcon="fas fa-sun" AdornmentColor="Color.Dark"></MudTextField>
         <MudSlider @bind-Value="brightness" Min="0" Max="200" Color="Color.Info"></MudSlider>
     </MudItem>
 
-    <MudItem Class="pa-4">
+    <MudItem Class="pa-3">
         <MudTextField @bind-Value="contrast" Label="contrast" Adornment="Adornment.Start" AdornmentIcon="fas fa-adjust" AdornmentColor="Color.Dark"></MudTextField>
         <MudSlider @bind-Value="contrast" Min="0" Max="1000" Color="Color.Info"></MudSlider>
     </MudItem>
 
-    <MudItem Class="pa-4">
+    <MudItem Class="pa-3">
         <MudTextField @bind-Value="height" Label="height" Adornment="Adornment.Start" AdornmentIcon="fas fa-arrows-alt-v" AdornmentColor="Color.Dark"></MudTextField>
         <MudSlider @bind-Value="height" Min="0" Max="5000" Color="Color.Info"></MudSlider>
     </MudItem>
 
-    <MudItem Class="pa-4">
+    <MudItem Class="pa-3">
         <MudTextField @bind-Value="width" Label="width" Adornment="Adornment.Start" AdornmentIcon="fas fa-arrows-alt-h" AdornmentColor="Color.Dark"></MudTextField>
         <MudSlider @bind-Value="width" Min="0" Max="5000" Color="Color.Info"></MudSlider>
     </MudItem>
