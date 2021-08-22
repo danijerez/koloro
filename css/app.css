@@ -13,8 +13,9 @@ html, body {
 }
 
 .center {
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cardSize {
@@ -26,7 +27,7 @@ html, body {
 }
 
 .cardFont {
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .miniFont {
