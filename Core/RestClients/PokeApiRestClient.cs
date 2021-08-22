@@ -37,11 +37,19 @@ namespace koloro.Core.RestClients
         public static async Task<string> UrlToBase64(HttpClient http, string url)
         {
             var format = "data:image/png;base64,";
-            var bytes = await http.GetByteArrayAsync(url);
-            if (url.Contains(".svg"))
-                format = "data:image/svg+xml;base64,";
 
-            return format + Convert.ToBase64String(bytes);
+            try
+            {
+                var bytes = await http.GetByteArrayAsync(url);
+                if (url.Contains(".svg"))
+                    format = "data:image/svg+xml;base64,";
+
+                return format + Convert.ToBase64String(bytes);
+            }catch(Exception e)
+            {
+                return string.Empty;
+            }
+
         }
 
 
