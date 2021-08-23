@@ -8,20 +8,19 @@
 <InputFile id="fileInput" OnChange="UploadFiles" hidden accept=".jpg, .jpeg, .png" />
 
 <MudAppBar Class="menu_top" Style="@($"color:{Colors.Shades.White};background:{Colors.BlueGrey.Lighten5};")">
-    <MudIconButton Class="pa-4" HtmlTag="label"
+    <MudIconButton Style="padding: 5px" HtmlTag="label"
                    Color="Color.Dark"
                    Icon="@Icons.Filled.AttachFile"
                    for="fileInput" />
-    <MudIconButton Class="pa-4" Icon="@Icons.Material.Filled.FileDownload" Color="Color.Secondary" OnClick="() => { DownloadImage(imgUrl).GetAwaiter(); }"></MudIconButton>
-    <MudIconButton Class="pa-4" Icon="@Icons.Material.Filled.InvertColorsOff" Color="Color.Dark" OnClick="() => { BlackAndWhite(); }"></MudIconButton>
-    <MudIconButton Class="pa-4" Icon="fas fa-palette" Color="Color.Warning" OnClick="() => { Normal(); }"></MudIconButton>
-    <MudIconButton Class="pa-4" Icon="fas fa-arrows-alt" Color="Color.Error" OnClick="() => { ResetOriginalSize(); }"></MudIconButton>
-    <MudIconButton Class="pa-4" Icon="fas fa-compress-arrows-alt" Color="Color.Info" OnClick="() => { ReduceOriginalSize(); }"></MudIconButton>
+    <MudIconButton Style="padding: 5px" Icon="@Icons.Material.Filled.FileDownload" Color="Color.Secondary" OnClick="() => { DownloadImage(imgUrl).GetAwaiter(); }"></MudIconButton>
+    <MudIconButton Style="padding: 5px" Icon="@Icons.Material.Filled.InvertColorsOff" Color="Color.Dark" OnClick="() => { BlackAndWhite(); }"></MudIconButton>
+    <MudIconButton Style="padding: 5px" Icon="fas fa-palette" Color="Color.Warning" OnClick="() => { Normal(); }"></MudIconButton>
+    <MudIconButton Style="padding: 5px" Icon="fas fa-arrows-alt" Color="Color.Error" OnClick="() => { ResetOriginalSize(); }"></MudIconButton>
+    <MudIconButton Style="padding: 5px" Icon="fas fa-compress-arrows-alt" Color="Color.Info" OnClick="() => { ReduceOriginalSize(); }"></MudIconButton>
     <MudSpacer></MudSpacer>
-    <MudItem xs="3">
-        <MudTextField @bind-Value="loadByUrl" Adornment="Adornment.Start" AdornmentIcon="fas fa-globe-europe" AdornmentColor="Color.Dark"></MudTextField>
-    </MudItem>
-    <MudIconButton Icon="fas fa-paper-plane" Color="Color.Dark" OnClick="@(()=>LoadByUrl(loadByUrl))"></MudIconButton>
+    <MudTextField Style="margin-top: auto;margin-left:15%;width:80%" @bind-Value="loadByUrl" Adornment="Adornment.Start" AdornmentIcon="fas fa-globe-europe" AdornmentColor="Color.Dark"></MudTextField>
+
+    <MudIconButton Style="padding: 5px" Icon="fas fa-paper-plane" Color="Color.Dark" OnClick="@(()=>LoadByUrl(loadByUrl))"></MudIconButton>
 </MudAppBar>
 
 <div  class="grid center">

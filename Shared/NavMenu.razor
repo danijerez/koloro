@@ -1,4 +1,5 @@
 ﻿@using MudBlazor
+@inject IJSRuntime JSRuntime;
 @inject NavigationManager NavManager
 
 <MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.Grey.Darken4};")" Fixed="true">
@@ -8,5 +9,14 @@
 
     <MudSpacer />
     <h1 class="deskContent">koloro</h1>
-    <MudIconButton Variant="Variant.Text" Icon="@Icons.Custom.Brands.GitHub" Target="_blank" Color="Color.Inherit" Link="https://github.com/danijerez" />
+    <MudIconButton Variant="Variant.Text" Icon="fas fa-cat" Target="_blank" Color="Color.Inherit" OnClick="() => { GoToUrl(github).GetAwaiter(); }" />
 </MudAppBar>
+
+
+@code{
+    private string github = "https://github.com/danijerez";
+    private async Task GoToUrl(string url)
+    {
+        await JSRuntime.InvokeAsync<object>("open", url, "_blank");
+    }
+}
