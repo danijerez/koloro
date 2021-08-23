@@ -27,7 +27,7 @@ html, body {
 }
 
 .cardFont {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .miniFont {
@@ -43,7 +43,7 @@ html, body {
         margin-right: auto;
     }
     .cardFont {
-        font-size: 15px;
+        font-size: 13px;
     }
     .deskContent {
         display: none;
