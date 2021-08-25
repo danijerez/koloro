@@ -6,6 +6,7 @@
 @inject HttpClient Http
 @inject IJSRuntime js
 
+
 <Canvas id="helper_canvas" @ref="helper_canvas" width="@width" height="@(height+25)" hidden />
 <img id="img_helper" src="@b64_helper" hidden />
 <MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.BlueGrey.Lighten5};")" Class="menu_top">
@@ -55,9 +56,9 @@
                         </MudCardHeader>
                         <img id="@pokemon.name" class="cardSize" src=@SelectUrl(pokemon) />
                         <MudCardActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.FormatColorReset" OnClick="() => { DownloadImage(pokemon, true).GetAwaiter(); }" Color="Color.Dark" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="() => { DownloadImage(pokemon, false).GetAwaiter(); }" Color="Color.Error" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Audiotrack" OnClick="() => { PlayAudio(pokemon).GetAwaiter(); }" Color="Color.Info" />
+                            <MudIconButton Icon="fas fa-tint-slash" OnClick="() => { DownloadImage(pokemon, true).GetAwaiter(); }" Color="Color.Dark" />
+                            <MudIconButton Icon="fas fa-save" OnClick="() => { DownloadImage(pokemon, false).GetAwaiter(); }" Color="Color.Error" />
+                            <MudIconButton Icon="fas fa-music" OnClick="() => { PlayAudio(pokemon).GetAwaiter(); }" Color="Color.Info" />
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
@@ -71,6 +72,7 @@
         <MudProgressLinear Style="height: 20px; margin-top: -10px;" Color="Color.Success" Indeterminate="true" />
     }
 </div>
+
 
 @code{
 
@@ -98,8 +100,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+
         await LoadPokemon();
         IsLoading = false;
+
     }
 
     private async Task SendForm()
@@ -145,7 +149,7 @@
 
         StateHasChanged();
 
-        await js.InvokeAsync<object>("saveAsFile", $"{pokemon.name}.png");
+        await js.InvokeAsync<object>("saveAsFile", $"{pokemon.id}_{pokemon.name}.png");
     }
 
     private string SelectUrl(PokemonDto pokemon)

@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @using MudBlazor
+@using Blazored.Toast.Configuration
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -7,4 +8,10 @@
 <MudLayout>
     <NavMenu />
     @Body
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="1000"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fas fa-hand-spock" />
+
 </MudLayout>

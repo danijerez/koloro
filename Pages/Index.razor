@@ -1,9 +1,21 @@
 ﻿@page "/"
 @inject NavigationManager NavManager
+@inject IToastService toastService
+@inject IJSRuntime js
 
 @code {
-    protected override void OnInitialized()
+
+    protected override async Task OnInitializedAsync()
     {
+
+        RenderFragment en =@<text>This page is a small project to download and color pictures <i class="fas fa-tint-slash"></i>, feel free and experiment <i class="fas fa-flask"></i>, but don't click the <i class="fas fa-cat"></i></text>;
+        RenderFragment es =@<text>Esta página es un pequeño proyecto para descargar y colorear dibujos <i class="fas fa-tint-slash"></i>, prueba y experimenta <i class="fas fa-flask"></i>, pero no hagas click en el <i class="fas fa-cat"></i></text>;
+
+
+        var browserLanguage = await js.InvokeAsync<string>("getBrowserLanguage");
+        await Task.Delay(1);
+        toastService.ShowToast(ToastLevel.Success, browserLanguage.Contains("es") ? es : en, "Hey!");
         NavManager.NavigateTo(NavManager.BaseUri + "pokemon");
-    }
+}
+
 }
