@@ -12,6 +12,7 @@
     <link href="koloro.styles.css" rel="stylesheet" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="_content/Blazored.Toast/blazored-toast.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -63,6 +64,13 @@
                     resolve(img.naturalWidth + '#' + img.naturalHeight);
                 }
             });
+        }
+
+        function getBrowserLanguage() {
+            var result = (navigator.languages && navigator.languages.length) ? navigator.languages[0] :
+                navigator.userLanguage || navigator.language || navigator.browserLanguage || 'en';
+            console.log(result);
+            return result;
         }
 
     </script>
