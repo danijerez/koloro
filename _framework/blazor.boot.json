@@ -35,7 +35,7 @@
       "Newtonsoft.Json.dll": "sha256-N4LS9Q4MWtwMcEiKVAm17eMYYidLKee5B788vtw\/fdY=",
       "System.IO.Pipelines.dll": "sha256-qZYTUS+ga7CydtH54fYPbehFCvx3B49I74G8dxreTog=",
       "YamlDotNet.dll": "sha256-fTtkl5zTrI8inU7M65T9EHJhPP+OdLbT38CL8l2lmAA=",
-      "koloro.dll": "sha256-RPJfEatju3B5SfPi3uACqz9\/broyakH0uAoRzaoqfsQ=",
+      "koloro.dll": "sha256-+QIuc12jjXEgfyGY+4xA3n0gBQV4NOfgupkkVP5GNO0=",
       "Microsoft.CSharp.dll": "sha256-f9zhjyHbRWE+IA0ziA4YhNVeIvBuLDfFRH8AymG51Zs=",
       "System.Collections.Concurrent.dll": "sha256-5wMrpeZeAqJ5TofvlbYzbPLZLGk7Io3Qgb+B3hpvYO8=",
       "System.Collections.Immutable.dll": "sha256-QM+CVSKddxlaAYxTOnlDPKwd61vmtoPO4JTfp8IRMk8=",
@@ -72,7 +72,7 @@
       "System.Text.Encodings.Web.dll": "sha256-cHPVI7PA6YtCkXM0fogf7+jc0fOS5LINZubocUEQXiI=",
       "System.Text.Json.dll": "sha256-zf0DwYhDxYrvGuZSoht0ETjtIkyx5SXJLkqD86qIbGM=",
       "System.Text.RegularExpressions.dll": "sha256-3gYV2uBKR0FrSBExSgXQz9BxqoV05yz\/h39lJ9nJUe8=",
-      "System.Private.CoreLib.dll": "sha256-gWIEncpkRMp6Mq3LQvdB2Sh4rPERg6R1YcDA9hiOQXQ="
+      "System.Private.CoreLib.dll": "sha256-o85eJfgmkQUUmjoUi8KjpDRwbdWqCG5UM6Xm416UdOM="
     },
     "lazyAssembly": null,
     "pdb": null,
