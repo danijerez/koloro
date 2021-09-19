@@ -1,10 +1,13 @@
 ﻿Toast: This page is a small project to download and color pictures <i class="fas fa-tint-slash"></i>, feel free and experiment <i class="fas fa-flask"></i>, but don't click the <i class="fas fa-cat"></i>
-Name: name
-Offset: offset
-Limit: limit
-Saturate: saturate
-Grayscale: grayscale
-Brightness: brightness
-Contrast: contrast
-Height: height
-Width: width
+Name: Name
+Offset: Offset
+Limit: Limit
+Saturate: Saturate
+Grayscale: Grayscale
+Brightness: Brightness
+Contrast: Contrast
+Height: Height
+Width: Width
+Hey: Hey!
+Pokemon: Pokémon
+Digimon: Digimon

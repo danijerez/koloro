@@ -3,6 +3,7 @@
 @using koloro.Core.Models
 @using koloro.Core.RestClients
 @using Excubo.Blazor.Canvas
+@using System.Globalization;
 @inject HttpClient Http
 @inject IJSRuntime js
 @inject ILanguageContainerService i18n
@@ -38,7 +39,7 @@
                     <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten4};")">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <div class="cardFont">@digimon.name</div>
+                                <div class="cardFont">@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(digimon.name)</div>
                             </CardHeaderContent>
                             <CardHeaderActions>
                                 <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://digimon.fandom.com/es/wiki/" + digimon.name) />
@@ -130,7 +131,7 @@
 
         StateHasChanged();
 
-        await js.InvokeAsync<object>("saveAsFile", $"{digimon.name}.png");
+        await js.InvokeAsync<object>("saveAsFile", $"{digimon.name.ToLower()}.png");
     }
 
     private string SelectUrl(DigimonData digimon)

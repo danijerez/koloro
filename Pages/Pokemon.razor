@@ -3,9 +3,11 @@
 @using koloro.Core.Models
 @using koloro.Core.RestClients
 @using Excubo.Blazor.Canvas
+@using System.Globalization;
 @inject HttpClient Http
 @inject IJSRuntime js
 @inject ILanguageContainerService i18n
+
 
 <Canvas id="helper_canvas" @ref="helper_canvas" width="@width" height="@(height+25)" hidden />
 <img id="img_helper" src="@b64_helper" hidden />
@@ -49,7 +51,7 @@
                     <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten4};")">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <div class="cardFont">@pokemon.id # @pokemon.name</div>
+                                <div class="cardFont">@pokemon.id # @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pokemon.name)</div>
                             </CardHeaderContent>
                             <CardHeaderActions>
                                 <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://www.pokemon.com/es/pokedex/" + pokemon.name) />
@@ -145,7 +147,7 @@
                 await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
             await ctx.DrawImageAsync("img_helper", 0, 0, width, height);
             await ctx.FontAsync("16px Helvetica");
-            await ctx.FillTextAsync(pokemon.id + " - " + pokemon.name, 0, height + 25);
+            await ctx.FillTextAsync(pokemon.id + " # " + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pokemon.name), 0, height + 25);
         }
 
         StateHasChanged();

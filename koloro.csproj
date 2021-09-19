@@ -14,13 +14,15 @@
   <ItemGroup>
     <None Remove="Resources\en-US.yml" />
     <None Remove="Resources\es-ES.yml" />
+    <None Remove="Resources\i18n\ja-JP.yml" />
     <None Remove="Resources\zh-CN.yml" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\en-US.yml" />
-    <EmbeddedResource Include="Resources\es-ES.yml" />
-    <EmbeddedResource Include="Resources\zh-CN.yml" />
+    <EmbeddedResource Include="Resources\i18n\en-US.yml" />
+    <EmbeddedResource Include="Resources\i18n\es-ES.yml" />
+    <EmbeddedResource Include="Resources\i18n\ja-JP.yml" />
+    <EmbeddedResource Include="Resources\i18n\zh-CN.yml" />
   </ItemGroup>
 
   <ItemGroup>

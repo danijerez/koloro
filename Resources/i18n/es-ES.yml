@@ -1,10 +1,13 @@
 ﻿Toast: Esta página es un pequeño proyecto para descargar y colorear dibujos <i class="fas fa-tint-slash"></i>, prueba y experimenta <i class="fas fa-flask"></i>, pero no hagas click en el <i class="fas fa-cat"></i>
-Name: nombre
-Offset: empiece
-Limit: límite
-Saturate: saturación
-Grayscale: escala de grises
-Brightness: brillo
-Contrast: contraste
-Height: altura
-Width: anchura
+Name: Nombre
+Offset: Empiece
+Limit: Límite
+Saturate: Saturación
+Grayscale: Grises
+Brightness: Brillo
+Contrast: Contraste
+Height: Altura
+Width: Anchura
+Hey: Hey!
+Pokemon: Pokémon
+Digimon: Digimon

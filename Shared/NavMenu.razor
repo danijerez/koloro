@@ -18,8 +18,8 @@
     &nbsp;&nbsp;
     <i class="@flag"></i>
     <MudIconButton Color="Color.Inherit" Icon="fas fa-flask" Link=@(NavManager.BaseUri+"experiment")></MudIconButton>
-    <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="@Icons.Material.Filled.CatchingPokemon" Link="@(NavManager.BaseUri+"pokemon")"></MudIconButton><div class="deskContent">Pokemon</div>
-    <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="fas fa-pastafarianism" Link="@(NavManager.BaseUri+"digimon")"></MudIconButton><div class="deskContent">Digimon</div>
+    <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="@Icons.Material.Filled.CatchingPokemon" Link="@(NavManager.BaseUri+"pokemon")"></MudIconButton><div class="deskContent">@i18n.Keys["Pokemon"]</div>
+    <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="fas fa-pastafarianism" Link="@(NavManager.BaseUri+"digimon")"></MudIconButton><div class="deskContent">@i18n.Keys["Digimon"]</div>
     <MudSpacer />
     <h1 class="deskContent">koloro</h1>
 
@@ -36,7 +36,7 @@
         await JSRuntime.InvokeAsync<object>("open", url, "_blank");
     }
 
-    private string[] locales = new string[] { "es-ES", "en-US", "zh-CN" };
+    private string[] locales = new string[] { "es-ES", "en-US", "ja-JP", "zh-CN" };
 
     private string flag;
     private string locale;
