@@ -5,21 +5,22 @@
 @using Excubo.Blazor.Canvas
 @inject HttpClient Http
 @inject IJSRuntime js
-
+@inject ILanguageContainerService i18n
 
 <Canvas id="helper_canvas" @ref="helper_canvas" width="@width" height="@(height+25)" hidden />
 <img id="img_helper" src="@b64_helper" hidden />
+
 <MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.BlueGrey.Lighten5};")" Class="menu_top">
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
             <MudItem xs="3">
-                <MudTextField @bind-Value="nametofind" Label="id/name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="nametofind" Label="@i18n.Keys["Name"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="offset" Label="offset" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="offset" Label="@i18n.Keys["Offset"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="limit" Label="limit" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="limit" Label="@i18n.Keys["Limit"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
                 <MudSelect @bind-Value="enumValue"
@@ -100,7 +101,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-
+        i18n.InitLocalizedComponent(this);
         await LoadPokemon();
         IsLoading = false;
 
@@ -162,4 +163,6 @@
         var url = $"https://api.triplydb.com/datasets/academy/pokemon/assets/download?fileName={pokemon.name}.ogg";
         await js.InvokeVoidAsync("playSound", url);
     }
+
+
 }

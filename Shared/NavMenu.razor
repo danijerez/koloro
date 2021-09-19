@@ -1,22 +1,68 @@
 ﻿@using MudBlazor
 @inject IJSRuntime JSRuntime;
 @inject NavigationManager NavManager
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager NavManager
+@inject ILanguageContainerService i18n
 
 <MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.Grey.Darken4};")" Fixed="true">
+
+    <select @bind="locale" class="@UpdateLanguage(locale)">
+        @foreach (var l in locales)
+        {
+            <option value="@l">
+                @l
+            </option>
+        }
+    </select>
+    &nbsp;&nbsp;
+    <i class="@flag"></i>
     <MudIconButton Color="Color.Inherit" Icon="fas fa-flask" Link=@(NavManager.BaseUri+"experiment")></MudIconButton>
     <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="@Icons.Material.Filled.CatchingPokemon" Link="@(NavManager.BaseUri+"pokemon")"></MudIconButton><div class="deskContent">Pokemon</div>
     <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="fas fa-pastafarianism" Link="@(NavManager.BaseUri+"digimon")"></MudIconButton><div class="deskContent">Digimon</div>
-
     <MudSpacer />
     <h1 class="deskContent">koloro</h1>
+
     <MudIconButton Variant="Variant.Text" Icon="fas fa-cat" Target="_blank" Color="Color.Inherit" OnClick="() => { GoToUrl(github).GetAwaiter(); }" />
 </MudAppBar>
 
-
 @code{
+
+
+
     private string github = "https://github.com/danijerez";
     private async Task GoToUrl(string url)
     {
         await JSRuntime.InvokeAsync<object>("open", url, "_blank");
     }
+
+    private string[] locales = new string[] { "es-ES", "en-US", "zh-CN" };
+
+    private string flag;
+    private string locale;
+
+    private async Task UpdateLanguage(string code)
+    {
+        i18n.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(code));
+        flag = FindFlag(code);
+        await localStore.SetItemAsync("i18n", code);
+        NavManager.NavigateTo(NavManager.Uri, forceLoad: false);
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        locale = await localStore.GetItemAsync<string>("i18n");
+        flag = FindFlag(locale);
+    }
+
+    private static string FindFlag(string code)
+    {
+        if (!string.IsNullOrEmpty(code))
+            return "flag-icon flag-icon-"+code.Split("-")[1].ToLower();
+        return "";
+    }
+
+
+
 }

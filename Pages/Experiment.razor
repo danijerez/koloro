@@ -4,6 +4,7 @@
 @using koloro.Core.RestClients
 @inject IJSRuntime js
 @inject HttpClient Http
+@inject ILanguageContainerService i18n
 
 <InputFile id="fileInput" OnChange="UploadFiles" hidden accept=".jpg, .jpeg, .png" />
 
@@ -23,35 +24,35 @@
     <MudIconButton Style="padding: 5px" Icon="fas fa-paper-plane" Color="Color.Dark" OnClick="@(()=>LoadByUrl(loadByUrl))"></MudIconButton>
 </MudAppBar>
 
-<div  class="grid center">
+<div class="grid center">
     <div style="width: 30%">
         <MudItem Class="pa-3">
-            <MudTextField @bind-Value="saturate" Label="saturate" Adornment="Adornment.Start" AdornmentIcon="fas fa-tint" AdornmentColor="Color.Dark"></MudTextField>
+            <MudTextField @bind-Value="saturate" Label="@i18n.Keys["Saturate"]" Adornment="Adornment.Start" AdornmentIcon="fas fa-tint" AdornmentColor="Color.Dark"></MudTextField>
             <MudSlider @bind-Value="saturate" Min="0" Max="100" Color="Color.Info"></MudSlider>
         </MudItem>
 
         <MudItem Class="pa-3">
-            <MudTextField @bind-Value="grayscale" Label="grayscale" Adornment="Adornment.Start" AdornmentIcon="fas fa-chess-board" AdornmentColor="Color.Dark"></MudTextField>
+            <MudTextField @bind-Value="grayscale" Label="@i18n.Keys["Grayscale"]" Adornment="Adornment.Start" AdornmentIcon="fas fa-chess-board" AdornmentColor="Color.Dark"></MudTextField>
             <MudSlider @bind-Value="grayscale" Min="0" Max="100" Color="Color.Info"></MudSlider>
         </MudItem>
 
         <MudItem Class="pa-3">
-            <MudTextField @bind-Value="brightness" Label="brightness" Adornment="Adornment.Start" AdornmentIcon="fas fa-sun" AdornmentColor="Color.Dark"></MudTextField>
+            <MudTextField @bind-Value="brightness" Label="@i18n.Keys["Brightness"]" Adornment="Adornment.Start" AdornmentIcon="fas fa-sun" AdornmentColor="Color.Dark"></MudTextField>
             <MudSlider @bind-Value="brightness" Min="0" Max="200" Color="Color.Info"></MudSlider>
         </MudItem>
 
         <MudItem Class="pa-3">
-            <MudTextField @bind-Value="contrast" Label="contrast" Adornment="Adornment.Start" AdornmentIcon="fas fa-adjust" AdornmentColor="Color.Dark"></MudTextField>
+            <MudTextField @bind-Value="contrast" Label="@i18n.Keys["Contrast"]" Adornment="Adornment.Start" AdornmentIcon="fas fa-adjust" AdornmentColor="Color.Dark"></MudTextField>
             <MudSlider @bind-Value="contrast" Min="0" Max="1000" Color="Color.Info"></MudSlider>
         </MudItem>
 
         <MudItem Class="pa-3">
-            <MudTextField @bind-Value="height" Label="height" Adornment="Adornment.Start" AdornmentIcon="fas fa-arrows-alt-v" AdornmentColor="Color.Dark"></MudTextField>
+            <MudTextField @bind-Value="height" Label="@i18n.Keys["Height"]" Adornment="Adornment.Start" AdornmentIcon="fas fa-arrows-alt-v" AdornmentColor="Color.Dark"></MudTextField>
             <MudSlider @bind-Value="height" Min="0" Max="5000" Color="Color.Info"></MudSlider>
         </MudItem>
 
         <MudItem Class="pa-3">
-            <MudTextField @bind-Value="width" Label="width" Adornment="Adornment.Start" AdornmentIcon="fas fa-arrows-alt-h" AdornmentColor="Color.Dark"></MudTextField>
+            <MudTextField @bind-Value="width" Label="@i18n.Keys["Width"]" Adornment="Adornment.Start" AdornmentIcon="fas fa-arrows-alt-h" AdornmentColor="Color.Dark"></MudTextField>
             <MudSlider @bind-Value="width" Min="0" Max="5000" Color="Color.Info"></MudSlider>
         </MudItem>
     </div>
@@ -62,104 +63,109 @@
 
 
 
-    <img id="test" src=@imgUrl hidden>
+<img id="test" src=@imgUrl hidden>
 
 
-    @code{
-        public bool LastCheck { get; set; } = false;
-        public bool CheckBoxBlack { get; set; } = false;
-        private Canvas helper_canvas;
-        private string imgUrl = string.Empty;
-        private string loadByUrl = string.Empty;
-        private string fileName = string.Empty;
-        public double saturate = 100;
-        public double grayscale = 0;
-        public double brightness = 100;
-        public double contrast = 100;
+@code{
+    public bool LastCheck { get; set; } = false;
+    public bool CheckBoxBlack { get; set; } = false;
+    private Canvas helper_canvas;
+    private string imgUrl = string.Empty;
+    private string loadByUrl = string.Empty;
+    private string fileName = string.Empty;
+    public double saturate = 100;
+    public double grayscale = 0;
+    public double brightness = 100;
+    public double contrast = 100;
 
-        public double height = 200;
-        public double width = 200;
+    public double height = 200;
+    public double width = 200;
 
-        public double lastWidth = 200;
-        public double lastHeight = 200;
+    public double lastWidth = 200;
+    public double lastHeight = 200;
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await using (var ctx = await helper_canvas.GetContext2DAsync())
         {
-            await using (var ctx = await helper_canvas.GetContext2DAsync())
-            {
-                await ctx.ClearRectAsync(0, 0, double.MaxValue, double.MaxValue);
-                await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
-                await ctx.DrawImageAsync("test", 0, 0, width, height);
-            }
-
-        }
-
-        private void Normal()
-        {
-            saturate = 100;
-            grayscale = 0;
-            brightness = 100;
-            contrast = 100;
-        }
-
-        private void BlackAndWhite()
-        {
-            saturate = 0;
-            grayscale = 100;
-            brightness = 200;
-            contrast = 1000;
-
-        }
-
-        private void ResetOriginalSize()
-        {
-            width = lastWidth;
-            height = lastHeight;
-        }
-
-        private void ReduceOriginalSize()
-        {
-            width = width/2;
-            height = height/2;
-        }
-
-        IList<IBrowserFile> files = new List<IBrowserFile>();
-        private async Task UploadFiles(InputFileChangeEventArgs e)
-        {
-            IBrowserFile imgFile = e.File;
-            var buffers = new byte[imgFile.Size];
-            fileName = imgFile.Name.Split(".")[0];
-            await imgFile.OpenReadStream().ReadAsync(buffers);
-            string imageType = imgFile.ContentType;
-            imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(buffers)}";
-            await RefreshSize();
-        }
-
-        private async Task RefreshSize()
-        {
-            var dimensions = (await js.InvokeAsync<string>("sizeImg", imgUrl)).Split("#");
-            width = double.Parse(dimensions[0]);
-            height = double.Parse(dimensions[1]);
-            lastWidth = width;
-            lastHeight = height;
-        }
-
-        private async Task DownloadImage(string url)
-        {
-
-            await js.InvokeAsync<object>("saveAsFile", $"{fileName}.png");
-
-        }
-
-        private async Task LoadByUrl(string url)
-        {
-            if (!string.IsNullOrEmpty(loadByUrl))
-            {
-                imgUrl = await PokeApiRestClient.UrlToBase64(Http, "https://cors.bridged.cc/" + url);
-                fileName = Guid.NewGuid().ToString();
-                await RefreshSize();
-            }
-
+            await ctx.ClearRectAsync(0, 0, double.MaxValue, double.MaxValue);
+            await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
+            await ctx.DrawImageAsync("test", 0, 0, width, height);
         }
 
     }
+
+    private void Normal()
+    {
+        saturate = 100;
+        grayscale = 0;
+        brightness = 100;
+        contrast = 100;
+    }
+
+    private void BlackAndWhite()
+    {
+        saturate = 0;
+        grayscale = 100;
+        brightness = 200;
+        contrast = 1000;
+
+    }
+
+    private void ResetOriginalSize()
+    {
+        width = lastWidth;
+        height = lastHeight;
+    }
+
+    private void ReduceOriginalSize()
+    {
+        width = width / 2;
+        height = height / 2;
+    }
+
+    IList<IBrowserFile> files = new List<IBrowserFile>();
+    private async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+        IBrowserFile imgFile = e.File;
+        var buffers = new byte[imgFile.Size];
+        fileName = imgFile.Name.Split(".")[0];
+        await imgFile.OpenReadStream().ReadAsync(buffers);
+        string imageType = imgFile.ContentType;
+        imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(buffers)}";
+        await RefreshSize();
+    }
+
+    private async Task RefreshSize()
+    {
+        var dimensions = (await js.InvokeAsync<string>("sizeImg", imgUrl)).Split("#");
+        width = double.Parse(dimensions[0]);
+        height = double.Parse(dimensions[1]);
+        lastWidth = width;
+        lastHeight = height;
+    }
+
+    private async Task DownloadImage(string url)
+    {
+
+        await js.InvokeAsync<object>("saveAsFile", $"{fileName}.png");
+
+    }
+
+    private async Task LoadByUrl(string url)
+    {
+        if (!string.IsNullOrEmpty(loadByUrl))
+        {
+            imgUrl = await PokeApiRestClient.UrlToBase64(Http, "https://cors.bridged.cc/" + url);
+            fileName = Guid.NewGuid().ToString();
+            await RefreshSize();
+        }
+
+    }
+
+    protected override void OnInitialized()
+    {
+        i18n.InitLocalizedComponent(this);
+    }
+
+}

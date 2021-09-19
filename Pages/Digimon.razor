@@ -5,6 +5,7 @@
 @using Excubo.Blazor.Canvas
 @inject HttpClient Http
 @inject IJSRuntime js
+@inject ILanguageContainerService i18n
 
 <Canvas id="helper_canvas" @ref="helper_canvas" width="@width" height="@(height+25)" hidden />
 <img id="img_helper" src="@b64_helper" hidden />
@@ -12,13 +13,13 @@
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
             <MudItem xs="3">
-                <MudTextField @bind-Value="nametofind" Label="name" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="nametofind" Label="@i18n.Keys["Name"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="offset" Label="offset" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="offset" Label="@i18n.Keys["Offset"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="limit" Label="limit" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="limit" Label="@i18n.Keys["Limit"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
         </MudGrid>
     </MudForm>
@@ -40,7 +41,7 @@
                                 <div class="cardFont">@digimon.name</div>
                             </CardHeaderContent>
                             <CardHeaderActions>
-                                <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://digimon.fandom.com/es/wiki/" + digimon.name)  />
+                                <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://digimon.fandom.com/es/wiki/" + digimon.name) />
                             </CardHeaderActions>
                         </MudCardHeader>
                         <img id="@digimon.name" class="cardSize" src=@SelectUrl(digimon) />
@@ -85,6 +86,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        i18n.InitLocalizedComponent(this);
         await LoadDigimon();
         IsLoading = false;
     }
@@ -119,11 +121,11 @@
         await using (var ctx = await helper_canvas.GetContext2DAsync())
         {
             await ctx.ClearRectAsync(0, 0, double.MaxValue, double.MaxValue);
-            if(blackwhite)
+            if (blackwhite)
                 await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
             await ctx.DrawImageAsync("img_helper", 0, 0, width, height);
             await ctx.FontAsync("16px Helvetica");
-            await ctx.FillTextAsync(digimon.name, 0, height+25);
+            await ctx.FillTextAsync(digimon.name, 0, height + 25);
         }
 
         StateHasChanged();

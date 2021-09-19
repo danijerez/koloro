@@ -2,20 +2,39 @@
 @inject NavigationManager NavManager
 @inject IToastService toastService
 @inject IJSRuntime js
+@inject ILanguageContainerService language
+@inject Blazored.LocalStorage.ILocalStorageService localStore
 
 @code {
+    private string keyLocale = "i18n";
 
     protected override async Task OnInitializedAsync()
     {
+        language.InitLocalizedComponent(this);
+        var lang = await localStore.GetItemAsync<string>(keyLocale);
+        if(string.IsNullOrEmpty(lang))
+            lang = await js.InvokeAsync<string>("getBrowserLanguage");
 
-        RenderFragment en =@<text>This page is a small project to download and color pictures <i class="fas fa-tint-slash"></i>, feel free and experiment <i class="fas fa-flask"></i>, but don't click the <i class="fas fa-cat"></i></text>;
-        RenderFragment es =@<text>Esta página es un pequeño proyecto para descargar y colorear dibujos <i class="fas fa-tint-slash"></i>, prueba y experimenta <i class="fas fa-flask"></i>, pero no hagas click en el <i class="fas fa-cat"></i></text>;
-
-
-        var browserLanguage = await js.InvokeAsync<string>("getBrowserLanguage");
+        await localStore.SetItemAsync("i18n", UpdateLanguage(lang));
         await Task.Delay(1);
-        toastService.ShowToast(ToastLevel.Success, browserLanguage.Contains("es") ? es : en, "Hey!");
+        toastService.ShowToast(ToastLevel.Success,@<text>@((MarkupString)language.Keys["Toast"])</text>, "Hey!");
         NavManager.NavigateTo(NavManager.BaseUri + "pokemon");
-}
+    }
+
+    private string UpdateLanguage(string languageCode)
+    {
+        var defaultLocale = "en-US";
+
+        try
+        {
+            language.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(languageCode));
+            return languageCode;
+        }
+        catch (Exception e)
+        {
+            language.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(defaultLocale));
+            return defaultLocale;
+        }
+    }
 
 }
