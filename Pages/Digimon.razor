@@ -47,7 +47,7 @@
                         </MudCardHeader>
                         <img id="@digimon.name" class="cardSize" src=@SelectUrl(digimon) />
                         <MudCardActions>
-                            <MudIconButton Icon="fas fa-tint-slash" OnClick="() => { DownloadImage(digimon, true).GetAwaiter(); }" Color="Color.Dark" />
+                            <MudIconButton Icon="fa-solid fa-droplet-slash" OnClick="() => { DownloadImage(digimon, true).GetAwaiter(); }" Color="Color.Dark" />
                             <MudIconButton Icon="fas fa-save" OnClick="() => { DownloadImage(digimon, false).GetAwaiter(); }" Color="Color.Error" />
                         </MudCardActions>
                     </MudCard>
