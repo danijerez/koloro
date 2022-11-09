@@ -48,7 +48,7 @@
             {
 
                 <li>
-                    <img class="pok" style="width:100%; max-width: 450px" src=@SelectUrl(pokemon) @onclick="() => { DownloadImage(pokemon, false).GetAwaiter(); }" />
+                    <img class="pok" style="width:100%; max-width: 450px" src=@SelectUrl(pokemon) @onclick="() => { PlayAudio(pokemon).GetAwaiter(); }" />
                     <div class="container">
                 
                         <div class="name">@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pokemon.name)</div>
@@ -59,8 +59,8 @@
                                 <img style="width:10%; padding: 0 0 0 1px;" src=@ImageByType(type.name)>
                             }
 
-                            <i class="fa-solid fa-circle-question" style="float: right; padding:4% 0 0 4%;" target="_blank" href="@("https://www.pokemon.com/es/pokedex/" + pokemon.name)"></i>
-                            <i class="fa-solid fa-volume-high" style="float: right; padding: 4% 0 0 4%;"  @onclick="() => { PlayAudio(pokemon).GetAwaiter(); }"></i>
+                            <i class="fa-solid fa-circle-question" style="float: right; padding:4% 0 0 4%;" @onclick="() => { PokemonInfoToNewTab(pokemon.name).GetAwaiter() ;}"></i>
+                            <i class="fa-solid fa-circle-down" style="float: right; padding: 4% 0 0 4%;" @onclick="() => { DownloadImage(pokemon, false).GetAwaiter(); }"></i>
                             <i class="fa-solid fa-circle-half-stroke" style="float: right; padding: 4% 0 0 4%;" @onclick="() => { DownloadImage(pokemon, true).GetAwaiter(); }"></i>
 
                             </div>
@@ -210,5 +210,9 @@
             return "";
     }
 
+    public async Task PokemonInfoToNewTab(string pokemonName)
+    {
+        await js.InvokeAsync<object>("open", $"https://www.pokemon.com/es/pokedex/{pokemonName}", "_blank");
+    }
 
 }
