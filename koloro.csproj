@@ -28,13 +28,13 @@
   <ItemGroup>
     <PackageReference Include="AKSoftware.Localization.MultiLanguages" Version="5.8.0" />
     <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="1.5.0" />
-    <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
-    <PackageReference Include="Blazored.Toast" Version="3.2.2" />
-    <PackageReference Include="Excubo.Blazor.Canvas" Version="3.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+    <PackageReference Include="Blazored.Toast" Version="4.0.0" />
+    <PackageReference Include="Excubo.Blazor.Canvas" Version="3.2.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-    <PackageReference Include="MudBlazor" Version="6.0.18" />
+    <PackageReference Include="MudBlazor" Version="6.1.7" />
     <PackageReference Include="System.Net.Http.Json" Version="7.0.0" />
   </ItemGroup>
 

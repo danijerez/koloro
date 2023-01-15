@@ -16,13 +16,13 @@
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
             <MudItem xs="3">
-                <MudTextField @bind-Value="nametofind" Label="@i18n.Keys["Name"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="nametofind" Label="@i18n.Keys["Name"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="offset" Label="@i18n.Keys["Offset"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="offset" Label="@i18n.Keys["Offset"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="limit" Label="@i18n.Keys["Limit"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="limit" Label="@i18n.Keys["Limit"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
                 <MudSelect @bind-Value="enumValue"
@@ -147,6 +147,8 @@
             await ctx.ClearRectAsync(0, 0, double.MaxValue, double.MaxValue);
             if (blackwhite)
                 await ctx.FilterAsync($"saturate({saturate}%) grayscale({grayscale}%) brightness({brightness}%) contrast({contrast}%)");
+            else
+                await ctx.FilterAsync("none");
             await ctx.DrawImageAsync("img_helper", 0, 0, width, height);
             await ctx.FontAsync("16px Helvetica");
             await ctx.FillTextAsync(pokemon.id + " # " + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pokemon.name), 0, height + 25);

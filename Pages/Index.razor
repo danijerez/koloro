@@ -17,7 +17,7 @@
 
         await localStore.SetItemAsync("i18n", UpdateLanguage(lang));
         await Task.Delay(1);
-        toastService.ShowToast(ToastLevel.Success,@<text>@((MarkupString)language.Keys["Toast"])</text>, "Hey!");
+        toastService.ShowToast(ToastLevel.Success,@<text>@((MarkupString)language.Keys["Toast"])</text>);
         NavManager.NavigateTo(NavManager.BaseUri + "pokemon");
     }
 
