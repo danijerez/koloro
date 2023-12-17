@@ -17,11 +17,11 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 7.0.100
+        dotnet-version: 8.0.100
 
     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
-      run: dotnet publish koloro.csproj -c Release -o release --nologo
+      run: dotnet publish src/koloro.csproj -c Release -o release --nologo
     
     # changes the base-tag in index.html from '/' to 'koloro' to match GitHub Pages repository subdirectory
     - name: Change base-tag in index.html from / to koloro
@@ -36,7 +36,7 @@ jobs:
       run: touch release/wwwroot/.nojekyll
       
     - name: Commit wwwroot to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@3.7.1
+      uses: JamesIves/github-pages-deploy-action@4.5.0
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
