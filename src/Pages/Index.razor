@@ -1,6 +1,6 @@
 ﻿@page "/"
 @inject NavigationManager NavManager
-@inject IToastService toastService
+@inject ISnackbar Snackbar
 @inject IJSRuntime js
 @inject ILanguageContainerService language
 @inject Blazored.LocalStorage.ILocalStorageService localStore
@@ -17,7 +17,7 @@
 
         await localStore.SetItemAsync("i18n", UpdateLanguage(lang));
         await Task.Delay(1);
-        toastService.ShowToast(ToastLevel.Success,@<text>@((MarkupString)language.Keys["Toast"])</text>);
+        Snackbar.Add(@<text>@((MarkupString)language.Keys["Toast"])</text>);
         NavManager.NavigateTo(NavManager.BaseUri + "pokemon");
     }
 
@@ -30,7 +30,7 @@
             language.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(languageCode));
             return languageCode;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             language.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(defaultLocale));
             return defaultLocale;

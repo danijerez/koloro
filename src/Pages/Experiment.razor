@@ -11,7 +11,7 @@
 <MudAppBar Class="menu_top" Style="@($"color:{Colors.Shades.White};background:{Colors.BlueGrey.Lighten5};")">
     <MudIconButton Style="padding: 5px" HtmlTag="label"
                    Color="Color.Dark"
-                   Icon="@Icons.Filled.AttachFile"
+                   Icon="@Icons.Material.Filled.AttachFile"
                    for="fileInput" />
     <MudIconButton Style="padding: 5px" Icon="@Icons.Material.Filled.FileDownload" Color="Color.Secondary" OnClick="() => { DownloadImage(imgUrl).GetAwaiter(); }"></MudIconButton>
     <MudIconButton Style="padding: 5px" Icon="@Icons.Material.Filled.InvertColorsOff" Color="Color.Dark" OnClick="() => { BlackAndWhite(); }"></MudIconButton>

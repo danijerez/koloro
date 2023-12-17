@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "koloro", "koloro.csproj", "{4DAF604D-BCA8-425D-A397-1352572C3801}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "koloro", "src/koloro.csproj", "{4DAF604D-BCA8-425D-A397-1352572C3801}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

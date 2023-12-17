@@ -14,13 +14,13 @@
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
             <MudItem xs="3">
-                <MudTextField @bind-Value="nametofind" Label="@i18n.Keys["Name"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="nametofind" Label="@i18n.Keys["Name"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="offset" Label="@i18n.Keys["Offset"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="offset" Label="@i18n.Keys["Offset"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="limit" Label="@i18n.Keys["Limit"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField @bind-Value="limit" Label="@i18n.Keys["Limit"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
             </MudItem>
         </MudGrid>
     </MudForm>
@@ -42,7 +42,7 @@
                                 <div class="cardFont">@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(digimon.name)</div>
                             </CardHeaderContent>
                             <CardHeaderActions>
-                                <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Link=@("https://digimon.fandom.com/es/wiki/" + digimon.name) />
+                                <MudIconButton Icon="@Icons.Material.Filled.Link" Color="Color.Default" Target="_blank" Href=@("https://digimon.fandom.com/es/wiki/" + digimon.name) />
                             </CardHeaderActions>
                         </MudCardHeader>
                         <img id="@digimon.name" class="cardSize" src=@SelectUrl(digimon) />

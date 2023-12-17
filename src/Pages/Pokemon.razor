@@ -8,12 +8,11 @@
 @inject IJSRuntime js
 @inject ILanguageContainerService i18n
 
-
 <Canvas id="helper_canvas" @ref="helper_canvas" width="@width" height="@(height+25)" hidden />
 <img id="img_helper" src="@b64_helper" hidden />
 
 <MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.BlueGrey.Lighten5};")" Class="menu_top">
-    <MudForm @ref="form" @bind-IsValid="@success">
+    <MudForm @ref="form" @bind-IsValid="@success" @onkeypress="@(e => EnterKeySubmit(e))">
         <MudGrid>
             <MudItem xs="3">
                 <MudTextField @bind-Value="nametofind" Label="@i18n.Keys["Name"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
@@ -26,7 +25,7 @@
             </MudItem>
             <MudItem xs="3">
                 <MudSelect @bind-Value="enumValue"
-                           OffsetY="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Style" AdornmentColor="Color.Dark">
+                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Style" AdornmentColor="Color.Dark">
                     @foreach (StyleArt item in Enum.GetValues(typeof(StyleArt)))
                     {
                         <MudSelectItem Value="@item"><div class="miniFont">@item</div></MudSelectItem>
@@ -35,6 +34,8 @@
             </MudItem>
         </MudGrid>
     </MudForm>
+    <MudToggleIconButton Icon="far fa-star"ToggledIcon="fas fa-star" Color="Color.Dark" @bind-Toggled="@Shiny"></MudToggleIconButton>
+    <MudToggleIconButton Icon="fas fa-mars-and-venus" ToggledIcon="fas fa-venus" Color="Color.Dark" @bind-Toggled="@Female"></MudToggleIconButton>
     <MudSpacer></MudSpacer>
     <MudIconButton Icon="fas fa-paper-plane" Color="Color.Dark" OnClick="@(()=>SendForm())"></MudIconButton>
 
@@ -46,28 +47,30 @@
 
             @foreach (var pokemon in ListPokemonData)
             {
+                var url = @SelectUrl(pokemon);
+                if (!string.IsNullOrEmpty(url))
+                {
+                    <li>
+                        <img class="pok" style="width:100%; max-width: 450px" src=@url @onclick="() => { PlayAudio(pokemon).GetAwaiter(); }" />
+                        <div class="container">
 
-                <li>
-                    <img class="pok" style="width:100%; max-width: 450px" src=@SelectUrl(pokemon) @onclick="() => { PlayAudio(pokemon).GetAwaiter(); }" />
-                    <div class="container">
-                
-                        <div class="name">@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pokemon.name)</div>
-                        <div class="ico">
-                            <i class="number">@pokemon.id</i>
-                            @foreach(var type in pokemon.types)
-                            {
-                                <img style="width:10%; padding: 0 0 0 1px;" src=@ImageByType(type.name)>
-                            }
+                            <div class="name">@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pokemon.Name)</div>
+                            <div class="ico">
+                                <i class="number">@pokemon.Id</i>
+                                @foreach (var types in pokemon.Types)
+                                {
+                                    <img style="width:10%; padding: 0 0 0 1px;" src=@ImageByType(types.Type.name)>
+                                }
 
-                            <i class="fa-solid fa-circle-question" style="float: right; padding:4% 0 0 4%;" @onclick="() => { PokemonInfoToNewTab(pokemon.name).GetAwaiter() ;}"></i>
-                            <i class="fa-solid fa-circle-down" style="float: right; padding: 4% 0 0 4%;" @onclick="() => { DownloadImage(pokemon, false).GetAwaiter(); }"></i>
-                            <i class="fa-solid fa-circle-half-stroke" style="float: right; padding: 4% 0 0 4%;" @onclick="() => { DownloadImage(pokemon, true).GetAwaiter(); }"></i>
+                                <i class="fa-solid fa-circle-question" style="float: right; padding:4% 0 0 4%;" @onclick="() => { PokemonInfoToNewTab(pokemon.Name).GetAwaiter() ;}"></i>
+                                <i class="fa-solid fa-circle-down" style="float: right; padding: 4% 0 0 4%;" @onclick="() => { DownloadImage(pokemon, false).GetAwaiter(); }"></i>
+                                <i class="fa-solid fa-circle-half-stroke" style="float: right; padding: 4% 0 0 4%;" @onclick="() => { DownloadImage(pokemon, true).GetAwaiter(); }"></i>
 
                             </div>
 
-                    </div>
-                </li>
-
+                        </div>
+                    </li>
+                }
             }
 
         </ul>
@@ -81,9 +84,11 @@
 
 @code{
 
+    private bool Shiny = false;
+    private bool Female = false;
     private bool IsLoading = true;
-    private List<PokemonDto> ListPokemonData;
-    private List<PokemonDto> AllPokemonData;
+    private List<PokemonV2Pokemon> ListPokemonData;
+    private PokemonResponse AllPokemonData;
     private Canvas helper_canvas;
     private int offset = 0;
     private int limit = 30;
@@ -100,7 +105,7 @@
     public double brightness = 200;
     public double contrast = 1000;
 
-    public enum StyleArt { Official, DreamWorld }
+    public enum StyleArt { OfficialArtwork, DreamWorld, Default, HomeDefault, BackDefault }
     private StyleArt enumValue { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -109,6 +114,14 @@
         await LoadPokemon();
         IsLoading = false;
 
+    }
+
+    private async Task EnterKeySubmit(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await SendForm();
+        }
     }
 
     private async Task SendForm()
@@ -120,19 +133,19 @@
     private async Task LoadPokemon()
     {
 
-        if (AllPokemonData == null || !AllPokemonData.Any())
-            AllPokemonData = await Http.GetFromJsonAsync<List<PokemonDto>>("data/pokemon.json");
+        if (AllPokemonData == null || !AllPokemonData.Pokemon.Any())
+            AllPokemonData = await PokeApiRestClient.Pokemon();
 
         if (!string.IsNullOrEmpty(nametofind))
-            ListPokemonData = AllPokemonData.Where(x => (x.name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase) || x.id.ToString().Contains(nametofind, StringComparison.InvariantCultureIgnoreCase)) && x.art.official != null).Take(limit).ToList();
+            ListPokemonData = AllPokemonData.Pokemon.Where(x => (x.Name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase) || x.Id.ToString().Contains(nametofind, StringComparison.InvariantCultureIgnoreCase))).Take(limit).ToList();
         else
-            ListPokemonData = AllPokemonData.Where(x => x.art.official != null).Skip(offset).Take(limit).ToList();
+            ListPokemonData = AllPokemonData.Pokemon.Skip(offset).Take(limit).ToList();
 
         IsLoading = true;
 
     }
 
-    private async Task DownloadImage(PokemonDto pokemon, bool blackwhite)
+    private async Task DownloadImage(PokemonV2Pokemon pokemon, bool blackwhite)
     {
         var url = SelectUrl(pokemon);
         b64_helper = await PokeApiRestClient.UrlToBase64(Http, url);
@@ -151,22 +164,50 @@
                 await ctx.FilterAsync("none");
             await ctx.DrawImageAsync("img_helper", 0, 0, width, height);
             await ctx.FontAsync("16px Helvetica");
-            await ctx.FillTextAsync(pokemon.id + " # " + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pokemon.name), 0, height + 25);
+            await ctx.FillTextAsync(pokemon.Id + " # " + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pokemon.Name), 0, height + 25);
         }
 
         StateHasChanged();
 
-        await js.InvokeAsync<object>("saveAsFile", $"{pokemon.id}_{pokemon.name}.png");
+        await js.InvokeAsync<object>("saveAsFile", $"{pokemon.Id}_{pokemon.Name}.png");
     }
 
-    private string SelectUrl(PokemonDto pokemon)
+    private string SelectUrl(PokemonV2Pokemon pokemon)
     {
-        return pokemon.art.dreamworld != null && enumValue.Equals(StyleArt.DreamWorld) ? pokemon.art.dreamworld : pokemon.art.official;
+        var result = PokeApiRestClient.SpritesUrl(pokemon.Sprites[0].Sprites);
+
+        if (enumValue.Equals(StyleArt.OfficialArtwork) && Shiny)
+            return result.Other.OfficialArtwork.FrontShiny;
+        if (enumValue.Equals(StyleArt.DreamWorld)){
+            if (Female)
+                return result.Other.DreamWorld.FrontFemale;
+            return result.Other.DreamWorld.FrontDefault;
+        }
+        if (enumValue.Equals(StyleArt.Default))
+        {
+            if (Shiny)
+                return result.FrontShiny;
+            if (Female)
+                return result.FrontFemale;
+            return result.FrontDefault;
+        }
+        
+        if (enumValue.Equals(StyleArt.HomeDefault)){
+            if(Shiny)
+                return result.Other.Home.FrontShiny;
+            if (Female)
+                return result.Other.Home.FrontFemale;
+            return result.Other.Home.FrontDefault;
+        }
+        if (enumValue.Equals(StyleArt.BackDefault))
+            return result.BackDefault;
+
+        return result.Other.OfficialArtwork.FrontDefault;
     }
 
-    private async Task PlayAudio(PokemonDto pokemon)
+    private async Task PlayAudio(PokemonV2Pokemon pokemon)
     {
-        var url = $"https://api.triplydb.com/datasets/academy/pokemon/assets/download?fileName={pokemon.name}.ogg";
+        var url = $"https://api.triplydb.com/datasets/academy/pokemon/assets/download?fileName={pokemon.Name}.ogg";
         await js.InvokeVoidAsync("playSound", url);
     }
 

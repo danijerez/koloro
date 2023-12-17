@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Utils\**" />
+    <Content Remove="Utils\**" />
+    <EmbeddedResource Remove="Utils\**" />
+    <None Remove="Utils\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\en-US.yml" />
+    <None Remove="Resources\es-ES.yml" />
+    <None Remove="Resources\i18n\ja-JP.yml" />
+    <None Remove="Resources\zh-CN.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\i18n\en-US.yml" />
+    <EmbeddedResource Include="Resources\i18n\es-ES.yml" />
+    <EmbeddedResource Include="Resources\i18n\ja-JP.yml" />
+    <EmbeddedResource Include="Resources\i18n\zh-CN.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AKSoftware.Localization.MultiLanguages" Version="5.9.11" />
+    <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="1.5.0" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+    <PackageReference Include="Excubo.Blazor.Canvas" Version="3.2.38" />
+    <PackageReference Include="GraphQL.Client" Version="6.0.2" />
+    <PackageReference Include="GraphQL.Client.Serializer.SystemTextJson" Version="6.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.0" />
+    <PackageReference Include="MudBlazor" Version="6.11.1" />
+    <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>
