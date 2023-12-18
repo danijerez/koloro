@@ -51,7 +51,7 @@
                 if (!string.IsNullOrEmpty(url))
                 {
                     <li>
-                        <img class="pok" style="width:100%; max-width: 450px" src=@url @onclick="() => { PlayAudio(pokemon).GetAwaiter(); }" />
+                        <img class="pok" style="width:100%; height:auto; object-fit: contain;" src=@url @onclick="() => { PlayAudio(pokemon).GetAwaiter(); }" />
                         <div class="container">
 
                             <div class="name">@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pokemon.Name)</div>
@@ -65,6 +65,9 @@
                                 <i class="fa-solid fa-circle-question" style="float: right; padding:4% 0 0 4%;" @onclick="() => { PokemonInfoToNewTab(pokemon.Name).GetAwaiter() ;}"></i>
                                 <i class="fa-solid fa-circle-down" style="float: right; padding: 4% 0 0 4%;" @onclick="() => { DownloadImage(pokemon, false).GetAwaiter(); }"></i>
                                 <i class="fa-solid fa-circle-half-stroke" style="float: right; padding: 4% 0 0 4%;" @onclick="() => { DownloadImage(pokemon, true).GetAwaiter(); }"></i>
+                                <br />
+                                <i class="fa-solid fa-weight-hanging" style="float: right; padding: 4% 0 0 4%;">@pokemon.Weight</i>
+                                <i class="fa-solid fa-arrows-up-down" style="float: right; padding: 4% 0 0 4%;">@pokemon.Height</i>
 
                             </div>
 
@@ -105,7 +108,38 @@
     public double brightness = 200;
     public double contrast = 1000;
 
-    public enum StyleArt { OfficialArtwork, DreamWorld, Default, HomeDefault, BackDefault }
+    public enum StyleArt
+    {
+        OfficialArtwork,
+        DreamWorld,
+        Default,
+        HomeDefault,
+        BackDefault,
+        Animated,
+        BlackWhite,
+        Crystal,
+        DiamondPearl,
+        Emerald,
+        FireredLeafgreen,
+        GenerationI,
+        GenerationIi,
+        GenerationIii,
+        GenerationIv,
+        GenerationV,
+        GenerationVi,
+        GenerationVii,
+        GenerationViii,
+        Gold,
+        HeartgoldSoulsilver,
+        OmegarubyAlphasapphire,
+        Platinum,
+        RedBlue,
+        RubySapphire,
+        Silver,
+        UltraSunUltraMoon,
+        XY
+    }
+
     private StyleArt enumValue { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -174,35 +208,48 @@
 
     private string SelectUrl(PokemonV2Pokemon pokemon)
     {
-        var result = PokeApiRestClient.SpritesUrl(pokemon.Sprites[0].Sprites);
+        var result = PokeApiRestClient.SpritesUrl(pokemon.Sprites.First().Sprites);
 
-        if (enumValue.Equals(StyleArt.OfficialArtwork) && Shiny)
-            return result.Other.OfficialArtwork.FrontShiny;
-        if (enumValue.Equals(StyleArt.DreamWorld)){
-            if (Female)
-                return result.Other.DreamWorld.FrontFemale;
-            return result.Other.DreamWorld.FrontDefault;
-        }
-        if (enumValue.Equals(StyleArt.Default))
-        {
-            if (Shiny)
-                return result.FrontShiny;
-            if (Female)
-                return result.FrontFemale;
-            return result.FrontDefault;
-        }
-        
-        if (enumValue.Equals(StyleArt.HomeDefault)){
-            if(Shiny)
-                return result.Other.Home.FrontShiny;
-            if (Female)
-                return result.Other.Home.FrontFemale;
-            return result.Other.Home.FrontDefault;
-        }
-        if (enumValue.Equals(StyleArt.BackDefault))
-            return result.BackDefault;
+        var styleArtToFunc = new Dictionary<(StyleArt, bool, bool), Func<string>>
+    {
+        { (StyleArt.OfficialArtwork, true, false), () => result.Other.OfficialArtwork.FrontShiny },
+        { (StyleArt.OfficialArtwork, false, false), () => result.Other.OfficialArtwork.FrontDefault },
+        { (StyleArt.DreamWorld, false, true), () => result.Other.DreamWorld.FrontFemale },
+        { (StyleArt.DreamWorld, false, false), () => result.Other.DreamWorld.FrontDefault },
+        { (StyleArt.Default, true, false), () => result.FrontShiny },
+        { (StyleArt.Default, false, true), () => result.FrontFemale },
+        { (StyleArt.Default, false, false), () => result.FrontDefault },
+        { (StyleArt.HomeDefault, true, false), () => result.Other.Home.FrontShiny },
+        { (StyleArt.HomeDefault, false, true), () => result.Other.Home.FrontFemale },
+        { (StyleArt.HomeDefault, false, false), () => result.Other.Home.FrontDefault },
+        { (StyleArt.BackDefault, false, false), () => result.BackDefault },
+        { (StyleArt.Animated, false, false), () => result.Versions.GenerationV.BlackWhite.Animated.FrontDefault },
+        { (StyleArt.BlackWhite, false, false), () => result.Versions.GenerationV.BlackWhite.FrontDefault },
+        { (StyleArt.Crystal, false, false), () => result.Versions.GenerationIi.Crystal.FrontDefault },
+        { (StyleArt.DiamondPearl, false, false), () => result.Versions.GenerationIv.DiamondPearl.FrontDefault },
+        { (StyleArt.Emerald, false, false), () => result.Versions.GenerationIii.Emerald.FrontDefault },
+        { (StyleArt.FireredLeafgreen, false, false), () => result.Versions.GenerationIii.FireredLeafgreen.FrontDefault },
+        { (StyleArt.GenerationI, false, false), () => result.Versions.GenerationI.RedBlue.FrontDefault },
+        { (StyleArt.GenerationIi, false, false), () => result.Versions.GenerationIi.Gold.FrontDefault },
+        { (StyleArt.GenerationIii, false, false), () => result.Versions.GenerationIii.RubySapphire.FrontDefault },
+        { (StyleArt.GenerationIv, false, false), () => result.Versions.GenerationIv.Platinum.FrontDefault },
+        { (StyleArt.GenerationV, false, false), () => result.Versions.GenerationV.BlackWhite.FrontDefault },
+        { (StyleArt.GenerationVi, false, false), () => result.Versions.GenerationVi.OmegarubyAlphasapphire.FrontDefault },
+        { (StyleArt.GenerationVii, false, false), () => result.Versions.GenerationVii.UltraSunUltraMoon.FrontDefault },
+        { (StyleArt.GenerationViii, false, false), () => result.Versions.GenerationViii.Icons.FrontDefault },
+        { (StyleArt.Gold, false, false), () => result.Versions.GenerationIi.Gold.FrontDefault },
+        { (StyleArt.HeartgoldSoulsilver, false, false), () => result.Versions.GenerationIv.HeartgoldSoulsilver.FrontDefault },
+        { (StyleArt.OmegarubyAlphasapphire, false, false), () => result.Versions.GenerationVi.OmegarubyAlphasapphire.FrontDefault },
+        { (StyleArt.Platinum, false, false), () => result.Versions.GenerationIv.Platinum.FrontDefault },
+        { (StyleArt.RedBlue, false, false), () => result.Versions.GenerationI.RedBlue.FrontDefault },
+        { (StyleArt.RubySapphire, false, false), () => result.Versions.GenerationIii.RubySapphire.FrontDefault },
+        { (StyleArt.Silver, false, false), () => result.Versions.GenerationIi.Silver.FrontDefault },
+        { (StyleArt.UltraSunUltraMoon, false, false), () => result.Versions.GenerationVii.UltraSunUltraMoon.FrontDefault },
+        { (StyleArt.XY, false, false), () => result.Versions.GenerationVi.XY.FrontDefault }
+    };
 
-        return result.Other.OfficialArtwork.FrontDefault;
+        var key = (enumValue, Shiny, Female);
+        return styleArtToFunc.ContainsKey(key) ? styleArtToFunc[key]() : result.Other.OfficialArtwork.FrontDefault;
     }
 
     private async Task PlayAudio(PokemonV2Pokemon pokemon)
