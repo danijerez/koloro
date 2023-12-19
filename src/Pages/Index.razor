@@ -17,7 +17,10 @@
 
         await localStore.SetItemAsync("i18n", UpdateLanguage(lang));
         await Task.Delay(1);
-        Snackbar.Add(@<text>@((MarkupString)language.Keys["Toast"])</text>);
+        Snackbar.Add(@<text>@((MarkupString)language.Keys["Toast"])</text>, Severity.Info, config =>
+        {
+            config.Icon = "fa-solid fa-user-astronaut";
+        });
         NavManager.NavigateTo(NavManager.BaseUri + "pokemon");
     }
 
