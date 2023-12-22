@@ -11,7 +11,7 @@
 <Canvas id="helper_canvas" @ref="helper_canvas" width="@width" height="@(height+25)" hidden />
 <img id="img_helper" src="@b64_helper" hidden />
 
-<MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.BlueGrey.Lighten5};")" Class="menu_top">
+<MudAppBar Class="menu_top">
     <MudForm @ref="form" @bind-IsValid="@success" @onkeypress="@(e => EnterKeySubmit(e))">
         <MudGrid>
             <MudItem xs="3">
@@ -37,7 +37,7 @@
     <MudToggleIconButton Icon="far fa-star"ToggledIcon="fas fa-star" Color="Color.Dark" @bind-Toggled="@Shiny"></MudToggleIconButton>
     <MudToggleIconButton Icon="fas fa-mars-and-venus" ToggledIcon="fas fa-venus" Color="Color.Dark" @bind-Toggled="@Female"></MudToggleIconButton>
     <MudSpacer></MudSpacer>
-    <MudIconButton Icon="fas fa-paper-plane" Color="Color.Dark" OnClick="@(()=>SendForm())"></MudIconButton>
+    <MudIconButton Icon="fas fa-paper-plane" Color="Color.Inherit" OnClick="@(()=>SendForm())"></MudIconButton>
 
 </MudAppBar>
 <div class="grid">
@@ -62,12 +62,12 @@
                                     <img style="width:10%; padding: 0 0 0 1px;" src=@ImageByType(types.Type.name)>
                                 }
 
-                                <i class="fa-solid fa-circle-question" style="float: right; padding:4% 0 0 4%;" @onclick="() => { PokemonInfoToNewTab(pokemon.Name).GetAwaiter() ;}"></i>
-                                <i class="fa-solid fa-circle-down" style="float: right; padding: 4% 0 0 4%;" @onclick="() => { DownloadImage(pokemon, false).GetAwaiter(); }"></i>
-                                <i class="fa-solid fa-circle-half-stroke" style="float: right; padding: 4% 0 0 4%;" @onclick="() => { DownloadImage(pokemon, true).GetAwaiter(); }"></i>
+                                <MudIconButton Color="Color.Secondary" Size="Size.Small" Icon="fa-solid fa-circle-info" Style="float: right;" @onclick="() => { PokemonInfoToNewTab(pokemon.Name).GetAwaiter() ;}"></MudIconButton>
+                                <MudIconButton Color="Color.Secondary" Size="Size.Small" Icon="fa-solid fa-circle-down" Style="float: right;" @onclick="() => { DownloadImage(pokemon, false).GetAwaiter(); }"></MudIconButton>
+                                <MudIconButton Color="Color.Secondary" Size="Size.Small" Icon=" fa-solid fa-circle-half-stroke" Style="float: right;" @onclick="() => { DownloadImage(pokemon, true).GetAwaiter(); }"></MudIconButton>
                                 <br />
-                                <i class="fa-solid fa-weight-hanging" style="float: right; padding: 4% 0 0 4%;">@pokemon.Weight</i>
-                                <i class="fa-solid fa-arrows-up-down" style="float: right; padding: 4% 0 0 4%;">@pokemon.Height</i>
+                                <i class="fa-solid fa-weight-hanging" style="float: right; padding: 5% 0 0 5%;">@pokemon.Weight</i>
+                                <i class="fa-solid fa-arrows-up-down" style="float: right; padding: 5% 0 0 5%;">@pokemon.Height</i>
 
                             </div>
 
@@ -122,13 +122,13 @@
         Emerald,
         FireredLeafgreen,
         GenerationI,
-        GenerationIi,
-        GenerationIii,
-        GenerationIv,
+        GenerationII,
+        GenerationIII,
+        GenerationIV,
         GenerationV,
-        GenerationVi,
-        GenerationVii,
-        GenerationViii,
+        GenerationVI,
+        GenerationVII,
+        GenerationVIII,
         Gold,
         HeartgoldSoulsilver,
         OmegarubyAlphasapphire,
@@ -230,13 +230,13 @@
         { (StyleArt.Emerald, false, false), () => result.Versions.GenerationIii.Emerald.FrontDefault },
         { (StyleArt.FireredLeafgreen, false, false), () => result.Versions.GenerationIii.FireredLeafgreen.FrontDefault },
         { (StyleArt.GenerationI, false, false), () => result.Versions.GenerationI.RedBlue.FrontDefault },
-        { (StyleArt.GenerationIi, false, false), () => result.Versions.GenerationIi.Gold.FrontDefault },
-        { (StyleArt.GenerationIii, false, false), () => result.Versions.GenerationIii.RubySapphire.FrontDefault },
-        { (StyleArt.GenerationIv, false, false), () => result.Versions.GenerationIv.Platinum.FrontDefault },
+        { (StyleArt.GenerationII, false, false), () => result.Versions.GenerationIi.Gold.FrontDefault },
+        { (StyleArt.GenerationIII, false, false), () => result.Versions.GenerationIii.RubySapphire.FrontDefault },
+        { (StyleArt.GenerationIV, false, false), () => result.Versions.GenerationIv.Platinum.FrontDefault },
         { (StyleArt.GenerationV, false, false), () => result.Versions.GenerationV.BlackWhite.FrontDefault },
-        { (StyleArt.GenerationVi, false, false), () => result.Versions.GenerationVi.OmegarubyAlphasapphire.FrontDefault },
-        { (StyleArt.GenerationVii, false, false), () => result.Versions.GenerationVii.UltraSunUltraMoon.FrontDefault },
-        { (StyleArt.GenerationViii, false, false), () => result.Versions.GenerationViii.Icons.FrontDefault },
+        { (StyleArt.GenerationVI, false, false), () => result.Versions.GenerationVi.OmegarubyAlphasapphire.FrontDefault },
+        { (StyleArt.GenerationVII, false, false), () => result.Versions.GenerationVii.UltraSunUltraMoon.FrontDefault },
+        { (StyleArt.GenerationVIII, false, false), () => result.Versions.GenerationViii.Icons.FrontDefault },
         { (StyleArt.Gold, false, false), () => result.Versions.GenerationIi.Gold.FrontDefault },
         { (StyleArt.HeartgoldSoulsilver, false, false), () => result.Versions.GenerationIv.HeartgoldSoulsilver.FrontDefault },
         { (StyleArt.OmegarubyAlphasapphire, false, false), () => result.Versions.GenerationVi.OmegarubyAlphasapphire.FrontDefault },

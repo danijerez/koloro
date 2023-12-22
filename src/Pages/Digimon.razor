@@ -10,7 +10,7 @@
 
 <Canvas id="helper_canvas" @ref="helper_canvas" width="@width" height="@(height+25)" hidden />
 <img id="img_helper" src="@b64_helper" hidden />
-<MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.BlueGrey.Lighten5};")" Class="menu_top">
+<MudAppBar Class="menu_top">
     <MudForm @ref="form" @bind-IsValid="@success">
         <MudGrid>
             <MudItem xs="3">
@@ -25,7 +25,7 @@
         </MudGrid>
     </MudForm>
     <MudSpacer></MudSpacer>
-    <MudIconButton Icon="fas fa-paper-plane" Color="Color.Dark" OnClick="@(()=>SendForm())"></MudIconButton>
+    <MudIconButton Icon="fas fa-paper-plane" Color="Color.Primary" OnClick="@(()=>SendForm())"></MudIconButton>
 
 </MudAppBar>
 <div class="grid">
@@ -36,9 +36,9 @@
             @foreach (var digimon in ListDigimonData)
             {
                 <MudItem>
-                    <MudCard Style="@($"color:{Colors.Grey.Darken4};background:{Colors.Grey.Lighten4};")">
+                    <MudCard>
                         <MudCardHeader>
-                            <CardHeaderContent>
+                            <CardHeaderContent >
                                 <div class="cardFont">@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(digimon.name)</div>
                             </CardHeaderContent>
                             <CardHeaderActions>
@@ -47,7 +47,7 @@
                         </MudCardHeader>
                         <img id="@digimon.name" class="cardSize" src=@SelectUrl(digimon) />
                         <MudCardActions>
-                            <MudIconButton Icon="fa-solid fa-droplet-slash" OnClick="() => { DownloadImage(digimon, true).GetAwaiter(); }" Color="Color.Dark" />
+                            <MudIconButton Icon="fa-solid fa-droplet-slash" OnClick="() => { DownloadImage(digimon, true).GetAwaiter(); }" Color="Color.Inherit" />
                             <MudIconButton Icon="fas fa-save" OnClick="() => { DownloadImage(digimon, false).GetAwaiter(); }" Color="Color.Error" />
                         </MudCardActions>
                     </MudCard>

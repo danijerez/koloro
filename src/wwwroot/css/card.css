@@ -10,13 +10,12 @@
 }
 
 .container {
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
     padding: 30px 5px 5px 5px;
     border-radius: 100px 100px 10px 10px;
-    margin: -50px 0px 0px 0px;
-    background: linear-gradient(45deg,transparent 34%, #d2d2d2 35%, #d2d2d2 40%, transparent 41%, transparent 59%, #d2d2d2 60%, #d2d2d2 65%, transparent 66%),linear-gradient(135deg,transparent 34%, #d2d2d2 35%, #d2d2d2 40%, transparent 41%, transparent 59%, #d2d2d2 60%, #d2d2d2 65%, transparent 66%);
+    margin: -60px 0px 0px 0px;
     background-size: 2em 2em;
-    background-color: #c2c2c2;
+    background-color: #14171A57;
     max-width: 450px;
     max-height: 450px;
 }
@@ -33,7 +32,7 @@
 
     padding: 15px 0px 0px 0px;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     color: white;
     text-shadow: 0 0 5px black, 0 0 1px black;
     font-weight: bold;

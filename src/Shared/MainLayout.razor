@@ -1,12 +1,44 @@
 ﻿@inherits LayoutComponentBase
-@using MudBlazor
 
 
-<MudThemeProvider />
+<MudThemeProvider Theme="_theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout>
+<MudLayout Style="overflow-x: hidden;">
     <NavMenu />
     @Body
 </MudLayout>
+
+@code {
+    private MudTheme _theme = new();
+
+    protected override void OnInitialized()
+    {
+        _theme = GenerateDarkTheme();
+    }
+
+    private MudTheme GenerateDarkTheme() =>
+    new MudTheme
+        {
+            Palette = new PaletteDark()
+            {
+                Primary = "#657786", /* Azul Twitter */
+                Secondary = "#657786", /* Azul grisáceo */
+                Tertiary = "#AAB8C2", /* Azul claro grisáceo */
+                Black = "#14171A", /* Negro azulado */
+                Background = "#000000", /* Fondo negro */
+                BackgroundGrey = "#657786", /* Fondo gris azulado */
+                Surface = "#14171A", /* Superficie azul oscuro */
+                TextPrimary = "#FFFFFF", /* Texto primario blanco */
+                TextSecondary = "#AAB8C2" /* Texto secundario azul claro grisáceo */
+            },
+            Typography = new Typography()
+            {
+                Default = new Default()
+                {
+                    FontFamily = new[] { "JetBrains Mono" }
+                }
+            }
+        };
+}

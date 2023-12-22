@@ -5,7 +5,7 @@
 @inject NavigationManager NavManager
 @inject ILanguageContainerService i18n
 
-<MudAppBar Style="@($"color:{Colors.Shades.White};background:{Colors.Grey.Darken4};")" Fixed="true">
+<MudAppBar Color="Color.Primary" Fixed="true">
 
     <select @bind="locale" class="@UpdateLanguage(locale)">
         @foreach (var l in locales)
