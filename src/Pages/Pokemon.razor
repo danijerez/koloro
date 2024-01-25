@@ -95,7 +95,6 @@
     private Canvas helper_canvas;
     private int offset = 0;
     private int limit = 30;
-    private int size = 250;
     private double width = 0;
     private double height = 0;
     private string nametofind = string.Empty;
@@ -208,7 +207,7 @@
 
     private string SelectUrl(PokemonV2Pokemon pokemon)
     {
-        var result = PokeApiRestClient.SpritesUrl(pokemon.Sprites.First().Sprites);
+        var result = pokemon.Sprites.First().Sprites;
 
         var styleArtToFunc = new Dictionary<(StyleArt, bool, bool), Func<string>>
     {

@@ -35,7 +35,7 @@ namespace koloro.Core.Models
     );
 
     public record PokemonV2Pokemonsprite(
-        [property: JsonPropertyName("sprites")] string Sprites
+        [property: JsonPropertyName("sprites")] PokemonSprites Sprites
     );
 
 }
