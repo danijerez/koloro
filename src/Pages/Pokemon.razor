@@ -11,21 +11,21 @@
 <Canvas id="helper_canvas" @ref="helper_canvas" width="@width" height="@(height+25)" hidden />
 <img id="img_helper" src="@b64_helper" hidden />
 
-<MudAppBar Class="menu_top">
-    <MudForm @ref="form" @bind-IsValid="@success" @onkeypress="@(e => EnterKeySubmit(e))">
+<MudAppBar Dense="true" Class="menu_top">
+    <MudForm @ref="form" @onkeyup="@(e => EnterKeySubmit(e))">
         <MudGrid>
             <MudItem xs="3">
-                <MudTextField @bind-Value="nametofind" Label="@i18n.Keys["Name"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Mode" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField Margin="Margin.Dense" @bind-Value="nametofind" Label="@i18n.Keys["Name"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Mode"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="offset" Label="@i18n.Keys["Offset"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.FirstPage" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField Margin="Margin.Dense"  @bind-Value="offset" Label="@i18n.Keys["Offset"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.FirstPage"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudTextField @bind-Value="limit" Label="@i18n.Keys["Limit"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.ContentCopy" AdornmentColor="Color.Dark"></MudTextField>
+                <MudTextField Margin="Margin.Dense" @bind-Value="limit" Label="@i18n.Keys["Limit"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.ContentCopy"></MudTextField>
             </MudItem>
             <MudItem xs="3">
-                <MudSelect @bind-Value="enumValue"
-                           Adornment="Adornment.Start" AdornmentColor="Color.Dark">
+                <MudSelect Label="@i18n.Keys["Style"]" Margin="Margin.Dense" @bind-Value="enumValue"
+                           Adornment="Adornment.Start">
                     @foreach (StyleArt item in Enum.GetValues(typeof(StyleArt)))
                     {
                         <MudSelectItem Value="@item"><div class="miniFont">@item</div></MudSelectItem>
@@ -34,10 +34,13 @@
             </MudItem>
         </MudGrid>
     </MudForm>
-    <MudToggleIconButton Icon="far fa-star"ToggledIcon="fas fa-star" Color="Color.Dark" @bind-Toggled="@Shiny"></MudToggleIconButton>
-    <MudToggleIconButton Icon="fas fa-mars-and-venus" ToggledIcon="fas fa-venus" Color="Color.Dark" @bind-Toggled="@Female"></MudToggleIconButton>
+    <MudToggleIconButton Icon="far fa-star" ToggledIcon="fas fa-star" ToggledSize="Size.Small" Size="Size.Small" @bind-Toggled="@Shiny"></MudToggleIconButton>
+    <MudToggleIconButton Icon="fas fa-mars-and-venus" ToggledIcon="fas fa-venus" ToggledSize="Size.Small" Size="Size.Small" @bind-Toggled="@Female"></MudToggleIconButton>
     <MudSpacer></MudSpacer>
-    <MudIconButton Icon="fas fa-paper-plane" Color="Color.Inherit" OnClick="@(()=>SendForm())"></MudIconButton>
+    <MudChip Size="Size.Small" Color="Color.Primary">@count</MudChip>
+    <MudTooltip Text="Search" Placement="Placement.Top">
+        <MudIconButton Size="Size.Small" Icon="fas fa-paper-plane" OnClick="@(()=>SendForm())"></MudIconButton>
+    </MudTooltip>
 
 </MudAppBar>
 <div class="grid">
@@ -101,6 +104,7 @@
     private MudForm form;
     private bool success;
     private string b64_helper = string.Empty;
+    private int count = 0;
 
     public double saturate = 0;
     public double grayscale = 100;
@@ -170,9 +174,16 @@
             AllPokemonData = await PokeApiRestClient.Pokemon();
 
         if (!string.IsNullOrEmpty(nametofind))
-            ListPokemonData = AllPokemonData.Pokemon.Where(x => (x.Name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase) || x.Id.ToString().Contains(nametofind, StringComparison.InvariantCultureIgnoreCase))).Take(limit).ToList();
-        else
+        {
+            var filter = AllPokemonData.Pokemon.Where(x => (x.Name.Contains(nametofind, StringComparison.InvariantCultureIgnoreCase) 
+            || x.Id.ToString().Contains(nametofind, StringComparison.InvariantCultureIgnoreCase)));
+            ListPokemonData = filter.Take(limit).ToList();
+            count = filter.Count();
+        }
+        else{
             ListPokemonData = AllPokemonData.Pokemon.Skip(offset).Take(limit).ToList();
+            count = AllPokemonData.Pokemon.Count;
+        }
 
         IsLoading = true;
 

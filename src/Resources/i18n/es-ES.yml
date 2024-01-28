@@ -1,5 +1,5 @@
 ﻿Toast: Esta página es un pequeño proyecto para descargar y colorear dibujos <i class="fas fa-tint-slash"></i>, prueba y experimenta <i class="fas fa-flask"></i>, pero no hagas click en el <i class="fas fa-cat fa-beat"></i>
-Name: Nombre
+Name: Filtro
 Offset: Empiece
 Limit: Límite
 Saturate: Saturación
@@ -11,3 +11,5 @@ Width: Anchura
 Hey: Hey!
 Pokemon: Pokémon
 Digimon: Digimon
+Style: Estilo
+Search: Buscar

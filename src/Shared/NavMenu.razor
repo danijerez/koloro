@@ -22,8 +22,9 @@
     <MudIconButton Variant="Variant.Text" Color="Color.Inherit" Icon="fas fa-pastafarianism" Href="@(NavManager.BaseUri+"digimon")"></MudIconButton><div class="deskContent">@i18n.Keys["Digimon"]</div>
     <MudSpacer />
     <h1 class="deskContent">koloro</h1>
-
-    <MudIconButton Variant="Variant.Text" Icon="fas fa-cat fa-beat" Target="_blank" Color="Color.Inherit" OnClick="() => { GoToUrl(github).GetAwaiter(); }" />
+    <MudTooltip Text="GitHub" Arrow="true" Placement="Placement.Top">
+        <MudIconButton Variant="Variant.Text" Icon="fas fa-cat fa-beat" Target="_blank" Color="Color.Inherit" OnClick="() => { GoToUrl(github).GetAwaiter(); }" />
+    </MudTooltip>
 </MudAppBar>
 
 @code{
