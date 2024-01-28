@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "koloro",
   "resources": {
-    "hash": "sha256-rcXQkNfJy2kFqALVTK6usBf2QYX2/Y9EIpGvEDMY+QE=",
+    "hash": "sha256-FxAqm+zJcT0xfOeXXoJQ9J8yijcUykEwV9PAkjyeYMg=",
     "jsModuleNative": {
       "dotnet.native.8.0.0.45ykigla5r.js": "sha256-LjLDIz9+J7uuiwMlQ4HbNx2BnSpphOtO2MwkoI28vdI="
     },
@@ -27,7 +27,7 @@
       "GraphQL.Client.Serializer.SystemTextJson.wasm": "sha256-wt5JFzTF5+4xaLmmBBJgrkMRKYJ8WoOK011RwbQyV0o=",
       "GraphQL.Client.wasm": "sha256-Ekpk3hAE/VR1t7pSF0kXT9XjnOwFZ+SmMkM9wfoZdN0=",
       "GraphQL.Primitives.wasm": "sha256-5YpDhZDU2sHRMWEg9ihkdJd5sfwsnIC1NXcETA+D4P0=",
-      "koloro.wasm": "sha256-Ju++pfVweJaF1CN4QtDVwZwD6sj+omebI3y43Se6/oU=",
+      "koloro.wasm": "sha256-vthxdijPzqcO3V/1ql5tUSyAV6xGTAWKDooPXl0Tvqg=",
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-CeB0FGf6CsuqV69h/eyR2G++Mk+iG2L67plCz+6e/H0=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-LPw16ovHf/XnepfUR7n8dARtxrVJBZBoFuW/ufPtdy4=",
       "Microsoft.AspNetCore.Components.Web.wasm": "sha256-jdBLU7bOTgFgCdXBYCQlk/9uOhFWF14xj+/7Tt/kncY=",
